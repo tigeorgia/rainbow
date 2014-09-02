@@ -19,3 +19,6 @@
 
 #ignore db config
 /config/database.yml
+
+# Ignore Ruby mine project config files
+/.idea
