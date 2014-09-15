@@ -1,4 +1,52 @@
-<% title "Georgian budget" %>
-<p>
-  <i>Insert data-visualization about Georgian budget here</i>
-</p>
+<% content_for :head do %>
+
+    <style type="text/css">
+        .bs-example{
+            margin: 20px;
+        }
+    </style>
+
+    <script>
+        var category_names_array = <%= raw @category_names.to_json %>;
+    </script>
+    <script src="http://d3js.org/d3.v3.min.js"></script>
+    <script src="http://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3.js"></script>
+
+<% end %>
+
+
+    <div class="col-md-3 column">
+
+      <div class="bs-example">
+        <div class="panel-group" id="accordion">
+          <% @category_item.each_with_index do |(cat_name,items),i| %>
+              <div class="panel panel-default">
+                <div class="panel-heading">
+                  <h4 class="panel-title">
+                    <a data-toggle="collapse" data-parent="#accordion" href="#collapse<%=i%>"><%=cat_name%></a>
+                  </h4>
+                </div>
+                <div id="collapse<%=i%>" class="panel-collapse collapse <% if i == 0 %> in <% end %> ">
+                  <div class="panel-body">
+                    <% items.each_with_index do |item, j| %>
+                        <div style="padding: 5px;">
+                         <%= item['name'] %>
+                         <%= text_field_tag "#{cat_name}-#{j.to_s}", item['amount'], class: "form-control amount #{cat_name.gsub(' ','_')}" %>
+                        </div>
+                    <% end %>
+                  </div>
+                </div>
+              </div>
+
+          <% end %>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-9 column">
+
+      <div id="chart_canvas"></div>
+
+    </div>
+

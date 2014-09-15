@@ -11,7 +11,33 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140901120040) do
+ActiveRecord::Schema.define(:version => 20140912115851) do
+
+  create_table "categories", :force => true do |t|
+    t.string   "name"
+    t.integer  "data_visualization_id"
+    t.datetime "created_at",            :null => false
+    t.datetime "updated_at",            :null => false
+  end
+
+  add_index "categories", ["data_visualization_id"], :name => "index_categories_on_data_visualization_id"
+
+  create_table "data_visualizations", :force => true do |t|
+    t.string   "name"
+    t.string   "description"
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
+  end
+
+  create_table "items", :force => true do |t|
+    t.string   "name"
+    t.integer  "amount"
+    t.integer  "category_id"
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
+  end
+
+  add_index "items", ["category_id"], :name => "index_items_on_category_id"
 
   create_table "page_translations", :force => true do |t|
     t.integer  "page_id"

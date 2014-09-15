@@ -1,0 +1,35 @@
+.bar.positive {
+    fill: lightgreen;
+}
+
+.bar.negative {
+    fill: blue;
+}
+
+.bar.positive:hover {
+    fill: orangered ;
+}
+
+.bar.negative:hover {
+    fill: orangered ;
+}
+
+.axis text {
+    font: 10px sans-serif;
+}
+
+.axis path,
+.axis line {
+    fill: none;
+    stroke: #000;
+    shape-rendering: crispEdges;
+}
+
+.d3-tip {
+    line-height: 1;
+    font-weight: bold;
+    padding: 12px;
+    background: rgba(0, 0, 0, 0.8);
+    color: #fff;
+    border-radius: 2px;
+}
