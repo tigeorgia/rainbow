@@ -83,6 +83,7 @@ en:
       new: New
     common:
       app_name: Rainbow project
+      budget_link: Georgian budget
       added_on: "Added on: %{date}" 
       jumpstart: JumpStart Georgia
       js_link_title: JumpStart Georgia - We communicate data better!
@@ -125,4 +126,21 @@ en:
         p1: Someone has requested a link to change your password on %{app_name}, and you can do this through the link below.
         link_title: Change my password
         p2: "If you didn't request this, please ignore this email."
-        p3: "Your password won't change until you access the link above and create a new one."                
+        p3: "Your password won't change until you access the link above and create a new one."
+  budget:
+    Agriculture: Agriculture
+    Culture: Culture
+    Education and Science: Education and Science
+    Environmental: Environmental
+    Foreign Affairs: Foreign Affairs
+    Health and Social Affairs: Health and Social Affairs
+    Penitentiary: Penitentiary
+    Refugees and IDPS: Refugees and IDPS
+    Regional Development and Infrastructure: Regional Development and Infrastructure
+    Sports and Youth Affairs: Sports and Youth Affairs
+    Defence: Defence
+    Economy and Sustainable Development: Economy and Sustainable Development
+    Finance: Finance
+    Justice: Justice
+    Order and Security: Order and Security
+

@@ -83,6 +83,7 @@ ka:
       new: ახალი            
     common:
       app_name: Rainbow project
+      budget_link: Georgian budget
       added_on: "დამატებულია: %{date}" 
       jumpstart: “ჯამპსტარტ ჯორჯია”
       js_link_title: “ჯამპსტარტ ჯორჯია” - ჩვენ გაწვდით მონაცემებს უკეთ!
@@ -126,3 +127,19 @@ ka:
         link_title: პაროლის შეცვლა
         p2: "თუ თქვენ არ მოგითხოვიათ პაროლის შეცვლა, გთხოვთ, არ მიაქციოთ ყურადღება ამ შეტყობინებას."
         p3: "თქვენი პაროლი იგივე დარჩება, სანამ არ გადახვალთ ზემოთ მითითებულ ბმულზე და შექმნით ახალ პაროლს."    
+  budget:
+    Agriculture: სოფლის მეურნეობა
+    Culture: კულტურა
+    Education and Science: მეცნიერება და განათლება
+    Environmental: გარემოს დაცვა
+    Foreign Affairs: საგარეო საქმეები
+    Health and Social Affairs: ჯანდაცვა და სოციალური უზრუნველყოფა
+    Penitentiary: პენიტენციალური
+    Refugees and IDPS: ლტოლვილები და განსახლება
+    Regional Development and Infrastructure: რეგიონული განვითარება და ინფრასტრუქტურა
+    Sports and Youth Affairs: სპორტისა და ახალგაზრდობის საქმეები
+    Defence: თავდაცვა
+    Economy and Sustainable Development: ეკონომიკა და მდგრადი განვითარება
+    Finance: ფინანსთა
+    Justice: იუსტიცია
+    Order and Security: თავდაცვა

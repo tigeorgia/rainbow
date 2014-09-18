@@ -1,5 +1,4 @@
 BootstrapStarter::Application.routes.draw do
-  get "budget/show"
 
 	#--------------------------------
 	# all resources should be within the scope block below
@@ -15,6 +14,7 @@ BootstrapStarter::Application.routes.draw do
 			resources :users
 		end
 
+    get "budget/show"
 
 		root :to => 'root#index'
 	  match "*path", :to => redirect("/#{I18n.default_locale}") # handles /en/fake/path/whatever

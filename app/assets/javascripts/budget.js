@@ -4,7 +4,7 @@ var y;
 var xAxis;
 
 margin = {top: 30, right: 10, bottom: 10, left: 10},
-    width = 800 - margin.left - margin.right,
+    width = 500 - margin.left - margin.right,
     height = 600 - margin.top - margin.bottom;
 
 var svg = d3.select("#chart_canvas").append("svg")
@@ -111,9 +111,10 @@ function calculateAndShowData(){
     for (var i=0;i < category_names_array.length;i++){
         graph_bar = {};
         var cat_name = category_names_array[i];
+        var input_name = input_names_array[i];
         graph_bar['name'] = cat_name;
         amount = 0.0
-        var class_to_target = "input."+cat_name.split(' ').join('_')+"[type=text]"
+        var class_to_target = "input."+input_name.split(' ').join('_')+"[type=text]"
         $(class_to_target).each(function () {
             amount = amount + parseInt(this.value / 1000000);
         });

@@ -6,7 +6,7 @@
   <p>
     Here's the list of our data-visualizations:
     <ul>
-      <li><a href='budget/show'>Georgian budget</a></li>
+      <li><%= link_to(t('app.common.budget_link'), budget_show_path(:locale => I18n.locale))%></li>
     </ul>
   </p>
 
