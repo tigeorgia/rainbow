@@ -9,19 +9,62 @@
     <script>
         var category_names_array = <%= raw @category_names.to_json %>;
         var input_names_array = <%= raw @input_names.to_json %>;
+        var init_programs = <%= @total_programs %>;
+        var init_main = <%= @total_main %>;
+
     </script>
     <script src="http://d3js.org/d3.v3.min.js"></script>
     <script src="http://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3.js"></script>
 
 <% end %>
 
-
-<div class="col-md-3 column">
-
+<!-- start left column -->
+<div class="col-sm-3 column nopadding">
   <div class="bs-example">
     <div class="panel-group" id="accordion">
       <% @category_item.each_with_index do |(cat_name,items),i| %>
-          <% if i < 7 %> <!-- We display the 7 first categories on the left hand side of the graph -->
+          <% if !@main_programs.include?cat_name %> <!-- We display the 7 first categories on the left hand side of the graph -->
+              <div class="panel panel-default">
+                <div class="panel-heading">
+                  <h4 class="panel-title">
+                    <a data-toggle="collapse" data-parent="#accordion" href="#collapse<%=i%>"><%= "#{t('budget.'+cat_name)}" %></a>
+                  </h4>
+                </div>
+                <div id="collapse<%=i%>" class="panel-collapse collapse <% if i == 1 %> in <% end %> ">
+                  <div class="panel-body">
+                    <% items.each_with_index do |item, j| %>
+                        <div style="padding: 5px;">
+                          <%= item['name'] %>
+                          <%= text_field_tag "#{cat_name}-#{j.to_s}", item['amount'], class: "form-control amount amount-left #{cat_name.gsub(' ','_')}", autocomplete: 'off' %>
+                        </div>
+                    <% end %>
+                  </div>
+                </div>
+              </div>
+          <% end %>
+
+      <% end %>
+
+    </div>
+  </div>
+</div>
+<!-- end left column -->
+
+<!-- start middle column -->
+<div id="midColId" class="col-sm-6 column nopadding">
+  <div id="graphId">
+    <div id="amountTransferId">Ok</div>
+    <div id="chart_canvas"></div>
+  </div>
+</div>
+<!-- end left column -->
+
+<!-- start right column -->
+<div class="col-sm-3 column nopadding">
+  <div class="bs-example">
+    <div class="panel-group" id="accordion">
+      <% @category_item.each_with_index do |(cat_name,items),i| %>
+          <% if @main_programs.include?cat_name %> <!-- We display the second half of the categories, on the right hand side, only the main programs -->
               <div class="panel panel-default">
                 <div class="panel-heading">
                   <h4 class="panel-title">
@@ -33,45 +76,7 @@
                     <% items.each_with_index do |item, j| %>
                         <div style="padding: 5px;">
                           <%= item['name'] %>
-                          <%= text_field_tag "#{cat_name}-#{j.to_s}", item['amount'], class: "form-control amount #{cat_name.gsub(' ','_')}" %>
-                        </div>
-                    <% end %>
-                  </div>
-                </div>
-              </div>
-          <% end %>
-
-      <% end %>
-
-    </div>
-  </div>
-</div>
-
-<div class="col-md-6 column">
-
-  <div id="chart_canvas"></div>
-
-</div>
-
-
-<div class="col-md-3 column">
-
-  <div class="bs-example">
-    <div class="panel-group" id="accordion">
-      <% @category_item.each_with_index do |(cat_name,items),i| %>
-          <% if i >= 7 %> <!-- We display the second half of the categories, on the right hand side -->
-              <div class="panel panel-default">
-                <div class="panel-heading">
-                  <h4 class="panel-title">
-                    <a data-toggle="collapse" data-parent="#accordion" href="#collapse<%=i%>"><%= "#{t('budget.'+cat_name)}" %></a>
-                  </h4>
-                </div>
-                <div id="collapse<%=i%>" class="panel-collapse collapse <% if i == 7 %> in <% end %> ">
-                  <div class="panel-body">
-                    <% items.each_with_index do |item, j| %>
-                        <div style="padding: 5px;">
-                          <%= item['name'] %>
-                          <%= text_field_tag "#{cat_name}-#{j.to_s}", item['amount'], class: "form-control amount #{cat_name.gsub(' ','_')}" %>
+                          <%= text_field_tag "#{cat_name}-#{j.to_s}", item['amount'], class: "form-control amount amount-right #{cat_name.gsub(' ','_')}", autocomplete: 'off' %>
                         </div>
                     <% end %>
                   </div>
@@ -83,3 +88,4 @@
     </div>
   </div>
 </div>
+<!-- end right column -->

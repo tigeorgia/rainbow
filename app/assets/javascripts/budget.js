@@ -4,7 +4,7 @@ var y;
 var xAxis;
 
 margin = {top: 30, right: 10, bottom: 10, left: 10},
-    width = 500 - margin.left - margin.right,
+    width = 460 - margin.left - margin.right,
     height = 600 - margin.top - margin.bottom;
 
 var svg = d3.select("#chart_canvas").append("svg")
@@ -131,7 +131,56 @@ $(document).ready(function(){
     calculateAndShowData();
 
     $('.amount').on('focusout', function() {
+        var total_left = 0;
+        var total_right = 0;
+        $('.amount-left').each(function() {
+            total_left += parseInt(this.value);
+        });
+
+        $('.amount-right').each(function() {
+            total_right += parseInt(this.value);
+        });
+
+        var diff_left = init_programs - total_left;
+        var diff_right = total_right - init_main;
+
+        if (diff_left > 0){
+            // Funds are being transferred from the left column. But how much in relation to the numbers in right column?
+            if (diff_right < diff_left){
+                // There is still some funds to transfer from the left column
+                $('#amountTransferId').html((diff_left - diff_right).toString() + " need to be distributed.");
+                $('#amountTransferId').removeClass().addClass("to_allocate");
+            }else if (diff_right == diff_left){
+                // We're all good
+                $('#amountTransferId').html("ok");
+                $('#amountTransferId').removeClass().addClass("balance");
+            }else{
+                // Too much has been allocated to the right column. More needs to be taken out of the left column.
+                $('#amountTransferId').html("Too much was allocated on the 3 main programs. Please take " + (diff_right - diff_left).toString() + " from the other programs.");
+                $('#amountTransferId').removeClass().addClass("to_putback");
+            }
+        }else if (diff_left < 0){
+            // Funds are being moved around on the left column.
+            $('#amountTransferId').html("Please re-allocate " + (Math.abs(diff_left)).toString() + " to the left programs.");
+            $('#amountTransferId').removeClass().addClass("to_movearound");
+        }else{
+            $('#amountTransferId').html("ok");
+            $('#amountTransferId').removeClass().addClass("balance");
+        }
+
         calculateAndShowData();
     });
 
 });
+
+
+/*$(window).scroll(function(){
+    $('#graphId').toggleClass('scrolling', $(window).scrollTop() > $('#midColId').offset().top);
+
+    //can be rewritten long form as:
+   /* var scrollPosition, headerOffset, isScrolling;
+    scrollPosition = $(window).scrollTop();
+    headerOffset = $('#header').offset().top;
+    isScrolling = scrollPosition > headerOffset;
+    $('#header-inner').toggleClass('scrolling', isScrolling);
+});*/

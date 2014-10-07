@@ -33,3 +33,33 @@
     color: #fff;
     border-radius: 2px;
 }
+
+.nopadding {
+    padding: 5px !important;
+}
+
+#amountTransferId{
+    font-weight: bold;
+    text-align: center;
+}
+
+.to_allocate{
+    color: cadetblue;
+}
+
+.to_putback{
+    color: #ff0000;
+}
+
+.to_movearound{
+    color: orange;
+}
+
+.balance{
+    color: green;
+}
+
+.scrolling {
+    position: fixed;
+    top: 0;
+}
