@@ -116,7 +116,9 @@ function calculateAndShowData(){
         amount = 0.0
         var class_to_target = "input."+input_name.split(' ').join('_')+"[type=text]"
         $(class_to_target).each(function () {
-            amount = amount + parseInt(this.value / 1000000);
+            if ($(this).parents('.popover').length == 0) {
+                amount = amount + parseInt(this.value / 1000000);
+            }
         });
         graph_bar['value'] = amount;
         data[i] = graph_bar;
@@ -128,17 +130,85 @@ function calculateAndShowData(){
 
 $(document).ready(function(){
 
+    var left_old_id = "";
+    var left_current_id = "";
+    var right_old_id = "";
+    var right_current_id = "";
+
+    var old_id = "";
+    var current_id = "";
+
+    $('.popover-markup>.popover-link').popover({
+        html: true,
+        container: 'body',
+        placement: function (context, source) {
+            var position = $(source).position();
+
+            if (position.top < 180){
+                return "bottom";
+            }else{
+                return "right";
+            }
+        },
+        title: function () {
+            return $(this).parent().find('.head').html();
+        },
+        content: function () {
+            return $(this).parent().find('.content').html();
+        }
+    }).on('click', function(e){
+
+        var input_id = $(this).attr("id");
+
+
+        var isRightColumn = (input_id.indexOf("right") > -1)
+
+        if (isRightColumn == true){
+            right_old_id = right_current_id
+            right_current_id = input_id;
+
+            old_id = right_old_id;
+            current_id = right_current_id;
+        }else{
+            left_old_id = left_current_id
+            left_current_id = input_id;
+
+            old_id = left_old_id;
+            current_id = left_current_id;
+        }
+
+        if(old_id != "" && old_id != current_id) {
+            $('#'+old_id).popover('hide')
+        }
+
+        if (old_id != current_id){
+            $(this).popover('show');
+        }
+    });
+
+    $('body').on('focusout', '.amount', function() {
+        var edited_val = $(this).val()
+        var this_id = $(this).attr('id');
+        $('.popover-markup').find('#'+this_id).attr('value', edited_val);
+
+    });
+
     calculateAndShowData();
 
-    $('.amount').on('focusout', function() {
+    $('body').on('focusout', function() {
         var total_left = 0;
         var total_right = 0;
+
         $('.amount-left').each(function() {
-            total_left += parseInt(this.value);
+            if ($(this).parents('.popover').length == 0) {
+                total_left += parseInt(this.value);
+            }
         });
 
         $('.amount-right').each(function() {
-            total_right += parseInt(this.value);
+            if ($(this).parents('.popover').length == 0) {
+                total_right += parseInt(this.value);
+            }
         });
 
         var diff_left = init_programs - total_left;
