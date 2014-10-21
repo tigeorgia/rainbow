@@ -1,0 +1,79 @@
+<!-- start left column -->
+<div class="col-sm-3 column nopadding">
+  <div class="bs-example">
+    <div class="panel-group" id="accordion">
+      <% @category_item.each_with_index do |(cat_name,items),i| %>
+          <% if !@main_programs.include?cat_name %> <!-- We display the 7 first categories on the left hand side of the graph -->
+              <div class="panel panel-default popover-markup">
+                <div id="link-popover-<%= i %>" class="panel-heading popover-link">
+                  <h4 class="panel-title">
+                    <a href="#"><%= "#{t('budget.'+cat_name)}" %></a>
+                  </h4>
+                </div>
+
+                <div class="head hide"><%= cat_name %></div>
+                <div class="content hide">
+                  <div class="panel-body">
+                    <% items.each_with_index do |item, j| %>
+                        <div style="padding: 5px;">
+                          <%= item['name'] %>
+                          <%= text_field_tag "#{cat_name}-#{j.to_s}", item['amount'], class: "form-control amount amount-left #{cat_name.gsub(' ','_')}", autocomplete: 'off' %>
+                        </div>
+                    <% end %>
+                  </div>
+                </div>
+                <div class="footer hide"></div>
+
+              </div>
+          <% end %>
+      <% end %>
+
+    </div>
+  </div>
+</div>
+<!-- end left column -->
+
+<!-- start middle column -->
+<div id="midColId" class="col-sm-6 column nopadding">
+  <div id="graphId">
+    <div id="amountTransferId">Ok</div>
+    <div id="chart_canvas"></div>
+  </div>
+</div>
+<!-- end left column -->
+
+<!-- start right column -->
+<div class="col-sm-3 column nopadding">
+  <div class="bs-example">
+    <div class="panel-group">
+      <% @category_item.each_with_index do |(cat_name,items),i| %>
+          <% if (@main_programs.include?cat_name) && (main_program == cat_name) %>
+              <!-- We display the second half of the categories, on the right hand side, only one main program -->
+              <div class="panel panel-default popover-markup">
+                <div id="link-popover-right-<%= i %>" class="panel-heading popover-link">
+                  <h4 class="panel-title">
+                    <a href="#"><%= "#{t('budget.'+cat_name)}" %></a>
+                  </h4>
+                </div>
+
+                <div class="head hide"><%= cat_name %></div>
+                <div class="content hide">
+                  <div class="panel-body">
+                    <% items.each_with_index do |item, j| %>
+                        <div style="padding: 5px;">
+                          <%= item['name'] %>
+                          <%= text_field_tag "#{cat_name}-#{j.to_s}", item['amount'], class: "form-control amount amount-right #{cat_name.gsub(' ','_')}", autocomplete: 'off' %>
+                        </div>
+                    <% end %>
+                  </div>
+                </div>
+                <div class="footer hide"></div>
+
+              </div>
+          <% end %>
+
+      <% end %>
+    </div>
+  </div>
+</div>
+<!-- end right column -->

@@ -38,7 +38,7 @@
     padding: 5px !important;
 }
 
-#amountTransferId{
+.amountTransfer{
     font-weight: bold;
     text-align: center;
 }
@@ -63,3 +63,8 @@
     position: fixed;
     top: 0;
 }
+
+.popover-link {
+    text-align: center;
+}
+

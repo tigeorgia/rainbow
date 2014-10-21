@@ -31,6 +31,13 @@ class BudgetController < ApplicationController
       end
     end
 
+    @category_item.each do |cat,items|
+      if items.length % 2 == 1
+        # As we're displaying the item information in a 2-col table, we want to have an even number of items, so we don't mess with the html code.
+        @category_item[cat] << {'name' => '', 'amount' => ''}
+      end
+    end
+
     if params[:embed]
       render layout: 'embed'
     end

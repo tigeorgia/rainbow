@@ -14,85 +14,33 @@
 
     </script>
     <script src="http://d3js.org/d3.v3.min.js"></script>
-    <script src="http://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3.js"></script>
+    <!-- <script src="http://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3.js"></script> -->
 
 <% end %>
 
-<!-- start left column -->
-<div class="col-sm-3 column nopadding">
-  <div class="bs-example">
-    <div class="panel-group" id="accordion">
-      <% @category_item.each_with_index do |(cat_name,items),i| %>
-          <% if !@main_programs.include?cat_name %> <!-- We display the 7 first categories on the left hand side of the graph -->
-              <div class="panel panel-default popover-markup">
-                <div id="link-popover-<%= i %>" class="panel-heading popover-link">
-                  <h4 class="panel-title">
-                    <a href="#"><%= "#{t('budget.'+cat_name)}" %></a>
-                  </h4>
-                </div>
+<!-- Tabs -->
+<ul class="nav nav-tabs">
+  <li class="active tab-label"><a href="#agriculture" role="tab" data-toggle="tab"><%= t('budget.Agriculture') %></a></li>
+  <li class="tab-label"><a href="#education-science" role="tab" data-toggle="tab"><%= t('budget.Education and Science') %></a></li>
+  <li class="tab-label"><a href="#health" role="tab" data-toggle="tab"><%= t('budget.Health and Social Affairs') %></a></li>
+</ul>
 
-                  <div class="head hide"><%= cat_name %></div>
-                  <div class="content hide">
-                    <div class="panel-body">
-                      <% items.each_with_index do |item, j| %>
-                          <div style="padding: 5px;">
-                            <%= item['name'] %>
-                            <%= text_field_tag "#{cat_name}-#{j.to_s}", item['amount'], class: "form-control amount amount-left #{cat_name.gsub(' ','_')}", autocomplete: 'off' %>
-                          </div>
-                      <% end %>
-                    </div>
-                  </div>
-                  <div class="footer hide"></div>
+<!-- Tab panes -->
+<div class="tab-content">
 
-              </div>
-          <% end %>
-      <% end %>
-
-    </div>
+  <!-- 'Agriculture' tab pane -->
+  <div class="tab-pane active" id="agriculture">
+    <%= render 'shared/budget_columns', main_program: 'Agriculture' %>
   </div>
-</div>
-<!-- end left column -->
 
-<!-- start middle column -->
-<div id="midColId" class="col-sm-6 column nopadding">
-  <div id="graphId">
-    <div id="amountTransferId">Ok</div>
-    <div id="chart_canvas"></div>
+  <!-- 'Education and Science' tab pane -->
+  <div class="tab-pane" id="education-science">
+    <%= render 'shared/budget_columns', main_program: 'Education and Science' %>
   </div>
-</div>
-<!-- end left column -->
 
-<!-- start right column -->
-<div class="col-sm-3 column nopadding">
-  <div class="bs-example">
-    <div class="panel-group">
-      <% @category_item.each_with_index do |(cat_name,items),i| %>
-          <% if @main_programs.include?cat_name %> <!-- We display the second half of the categories, on the right hand side, only the main programs -->
-              <div class="panel panel-default popover-markup">
-                <div id="link-popover-right-<%= i %>" class="panel-heading popover-link">
-                  <h4 class="panel-title">
-                    <a href="#"><%= "#{t('budget.'+cat_name)}" %></a>
-                  </h4>
-                </div>
-
-                <div class="head hide"><%= cat_name %></div>
-                <div class="content hide">
-                  <div class="panel-body">
-                    <% items.each_with_index do |item, j| %>
-                        <div style="padding: 5px;">
-                          <%= item['name'] %>
-                          <%= text_field_tag "#{cat_name}-#{j.to_s}", item['amount'], class: "form-control amount amount-right #{cat_name.gsub(' ','_')}", autocomplete: 'off' %>
-                        </div>
-                    <% end %>
-                  </div>
-                </div>
-                <div class="footer hide"></div>
-
-              </div>
-          <% end %>
-
-      <% end %>
-    </div>
+  <!-- 'Health and Social Affairs' tab pane -->
+  <div class="tab-pane" id="health">
+    <%= render 'shared/budget_columns', main_program: 'Health and Social Affairs' %>
   </div>
+
 </div>
-<!-- end right column -->

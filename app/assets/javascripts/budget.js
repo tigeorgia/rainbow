@@ -29,7 +29,7 @@ var init = function init() {
 
 }
 
-var tip = d3.tip()
+/*var tip = d3.tip()
     .attr('class', 'd3-tip')
     .offset([0, 0])
     .html(function(d) {
@@ -37,7 +37,7 @@ var tip = d3.tip()
             "<strong>Value:</strong> <span style='color:red'>" + d.value+" millions</span>";
     })
 
-svg.call(tip);
+svg.call(tip);*/
 
 function displayBars(svg, dataset){
 
@@ -138,6 +138,16 @@ $(document).ready(function(){
     var old_id = "";
     var current_id = "";
 
+    $('.nav-tabs').on('click', '.tab-label', function (e) {
+        $('.popover-link').each(function () {
+            //the 'is' for buttons that trigger popups
+            //the 'has' for icons within a button that triggers a popup
+            if (!$(this).is(e.target) && $(this).has(e.target).length === 0 && $('.popover').has(e.target).length === 0) {
+                $(this).popover('hide');
+            }
+        });
+    });
+
     $('.popover-markup>.popover-link').popover({
         html: true,
         container: 'body',
@@ -160,8 +170,7 @@ $(document).ready(function(){
 
         var input_id = $(this).attr("id");
 
-
-        var isRightColumn = (input_id.indexOf("right") > -1)
+        var isRightColumn = (input_id.indexOf("right") > -1);
 
         if (isRightColumn == true){
             right_old_id = right_current_id
@@ -178,13 +187,13 @@ $(document).ready(function(){
         }
 
         if(old_id != "" && old_id != current_id) {
-            $('#'+old_id).popover('hide')
+            $('#'+old_id).popover('hide');
         }
 
         if (old_id != current_id){
             $(this).popover('show');
         }
-    });
+    }).on("show.bs.popover", function(){ $(this).data("bs.popover").tip().css("max-width", "600px"); });
 
     $('body').on('focusout', '.amount', function() {
         var edited_val = $(this).val()
@@ -193,21 +202,26 @@ $(document).ready(function(){
 
     });
 
-    calculateAndShowData();
+    //calculateAndShowData();
 
     $('body').on('focusout', function() {
         var total_left = 0;
         var total_right = 0;
 
-        $('.amount-left').each(function() {
+        var count_left = 0;
+        var count_right = 0;
+
+        $('.amount-left', '#agriculture').each(function() {
             if ($(this).parents('.popover').length == 0) {
                 total_left += parseInt(this.value);
+                count_left = count_left + 1;
             }
         });
 
         $('.amount-right').each(function() {
             if ($(this).parents('.popover').length == 0) {
                 total_right += parseInt(this.value);
+                count_right = count_right + 1;
             }
         });
 
@@ -218,27 +232,39 @@ $(document).ready(function(){
             // Funds are being transferred from the left column. But how much in relation to the numbers in right column?
             if (diff_right < diff_left){
                 // There is still some funds to transfer from the left column
-                $('#amountTransferId').html((diff_left - diff_right).toString() + " need to be distributed.");
-                $('#amountTransferId').removeClass().addClass("to_allocate");
+                $(".amountTransfer").each(function() {
+                    $(this).html((diff_left - diff_right).toString() + " need to be distributed.");
+                    $(this).removeClass().addClass("amountTransfer to_allocate");
+                });
+
             }else if (diff_right == diff_left){
                 // We're all good
-                $('#amountTransferId').html("ok");
-                $('#amountTransferId').removeClass().addClass("balance");
+                $(".amountTransfer").each(function() {
+                    $(this).html("ok");
+                    $(this).removeClass().addClass("amountTransfer balance");
+                });
             }else{
                 // Too much has been allocated to the right column. More needs to be taken out of the left column.
-                $('#amountTransferId').html("Too much was allocated on the 3 main programs. Please take " + (diff_right - diff_left).toString() + " from the other programs.");
-                $('#amountTransferId').removeClass().addClass("to_putback");
+                $(".amountTransfer").each(function() {
+                    $(this).html("Too much was allocated on the 3 main programs. Please take " + (diff_right - diff_left).toString() + " from the other programs.");
+                    $(this).removeClass().addClass("amountTransfer to_putback");
+                });
             }
         }else if (diff_left < 0){
             // Funds are being moved around on the left column.
-            $('#amountTransferId').html("Please re-allocate " + (Math.abs(diff_left)).toString() + " to the left programs.");
-            $('#amountTransferId').removeClass().addClass("to_movearound");
+            $(".amountTransfer").each(function() {
+                $(this).html("Please re-allocate " + (Math.abs(diff_left)).toString() + " to the left programs.");
+                $(this).removeClass().addClass("amountTransfer to_movearound");
+            });
+
         }else{
-            $('#amountTransferId').html("ok");
-            $('#amountTransferId').removeClass().addClass("balance");
+            $(".amountTransfer").each(function() {
+                $(this).html("ok");
+                $(this).removeClass().addClass("amountTransfer balance");
+            });
         }
 
-        calculateAndShowData();
+        //calculateAndShowData();
     });
 
 });
