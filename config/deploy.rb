@@ -1,106 +1,81 @@
-####################################################################
-##### SET ALL VARIABLES UNDER config/deploy/env.rb             #####
-####################################################################
+require "bundler/capistrano"
+#require 'capistrano/ext/multistage'
+#set :stages, ["staging", "production"]
+#set :default_stage, "staging"
 
-set :stages, %w(production staging)
-set :default_stage, "staging" # if just run 'cap deploy' the staging environment will be used
+#############################
+####### SERVER SETUP ########
+#############################
 
-require 'capistrano/ext/multistage' # so we can deploy to staging and production servers
-require "bundler/capistrano" # Load Bundler's capistrano plugin.
+### LIVE SITE ####
+#set :app_path, "/home/tigeorgia/webapps"
+#set :application,"tenderwatch"
+#set :deploy_to, "#{app_path}/#{application}"
+#set :assets_path, "#{app_path}/tendermonitor_static"
+#role :web, "web331.webfaction.com"
+#role :app, "web331.webfaction.com"
+#role :db, "web331.webfaction.com", :primary => true
 
-# these vars are set in deploy/env.rb
-#set :user, "placeholder"
-#set :application, "placeholder"
+### STAGING ####
+set :app_path, "/home/tigeorgia/webapps"
+set :application, "rainbow_staging"
+set :deploy_to, "#{app_path}/#{application}"
+set :assets_path, "#{deploy_to}_static"
+role :web, "web331.webfaction.com"
+role :app, "web331.webfaction.com"
+role :db, "web331.webfaction.com", :primary => true
 
-set(:deploy_to) {"/home/#{user}/#{application}"}
 
-set :deploy_via, :remote_cache
-set :use_sudo, false
+##########################
+###### DEPLOY CODE #######
+##########################
 
 set :scm, "git"
-set(:branch) {"#{git_branch_name}"}
-set(:repository) {"git@github.com:#{github_account_name}/#{github_repo_name}.git"}
-
+set :branch, "popover"
+set :repository, "git://github.com/tigeorgia/rainbow.git"
 default_run_options[:pty] = true
-ssh_options[:forward_agent] = true
-
-set :keep_releases, 2
-after "deploy", "deploy:cleanup" # remove the old releases
-
+set :scm_username, "EtienneBaque"
+set :user, "tigeorgia"
+set :use_sudo, false
 
 namespace :deploy do
-  %w[start stop restart].each do |command|
-    desc "#{command} unicorn server"
-    task command, roles: :app, except: {no_release: true} do
-      run "/etc/init.d/unicorn_#{application} #{command}"
-    end
+  desc "Restart nginx"
+  task :restart do
+    run "#{deploy_to}/bin/restart"
   end
-
-  task :setup_config, roles: :app do
-    sudo "ln -nfs #{current_path}/config/deploy/#{ngnix_conf_file_loc} /etc/nginx/sites-enabled/#{application}"
-    sudo "ln -nfs #{current_path}/config/deploy/#{unicorn_init_file_loc} /etc/init.d/unicorn_#{application}"
-    run "mkdir -p #{shared_path}/config"
-    put File.read("config/database.example.yml"), "#{shared_path}/config/database.yml"
-    puts "Now edit the config files in #{shared_path}."
-  end
-  after "deploy:setup", "deploy:setup_config"
-
-  task :symlink_config, roles: :app do
-    run "ln -nfs #{shared_path}/config/database.yml #{release_path}/config/database.yml"
-		puts ">>>>>>>>>>>>>>>>>>>>>>>>>>>"
-		puts "If this is first time, be sure to run the following so app starts on server bootup: sudo update-rc.d unicorn_#{application} defaults"
-		puts ">>>>>>>>>>>>>>>>>>>>>>>>>>>"
-  end
-  after "deploy:finalize_update", "deploy:symlink_config"
-
-  desc "Make sure local git is in sync with remote."
-  task :check_revision, roles: :web do
-    unless `git rev-parse HEAD` == `git rev-parse origin/#{git_branch_name}`
-      puts "WARNING: HEAD is not the same as origin/#{git_branch_name}"
-      puts "Run `git push` to sync changes."
-      exit
-    end
-  end
-  before "deploy", "deploy:check_revision"
-
-  task :folder_cleanup, roles: :app do
-#		logger.info "cleaning up release/db"
-#		run "rm -rf #{release_path}/db/*"
-		logger.info "cleaning up release/.git"
-		run "rm -rf #{release_path}/.git"
-  end
-  after "deploy:cleanup", "deploy:folder_cleanup"
-
-	# the code to test whether or not assets have changed and therefore need to be compiled was taken from answer at:
-	# - http://stackoverflow.com/questions/12919509/capistrano-deploy-assets-precompile-never-compiles-assets-why
-	# the code that builds assets locally and then copies to server was taken from:
-	# - http://www.rostamizadeh.net/blog/2012/04/14/precompiling-assets-locally-for-capistrano-deployment/
-	namespace :assets do
-    task :precompile, :roles => :web, :except => { :no_release => true } do
-      # Check if assets have changed. If not, don't run the precompile task - it takes a long time.
-      force_compile = false
-      changed_asset_count = 0
-      begin
-        from = source.next_revision(current_revision)
-        asset_locations = 'app/assets/ lib/assets vendor/assets'
-        changed_asset_count = capture("cd #{latest_release} && #{source.local.log(from)} #{asset_locations} | wc -l").to_i
-      rescue Exception => e
-        logger.info "Error: #{e}, forcing precompile"
-				logger.info "--> If this is the first deploy (deploy:cold), this is normal"
-        force_compile = true
-      end
-      if changed_asset_count > 0 || force_compile
-        logger.info "#{changed_asset_count} assets have changed; force_compile = #{force_compile}. Pre-compiling locally and pushing to shared/assets folder on server"
-        run_locally("rake assets:clean RAILS_ENV=#{rails_env} && rake assets:precompile RAILS_ENV=#{rails_env} ")
-        run_locally "cd public && tar -jcf assets.tar.bz2 assets"
-        top.upload "public/assets.tar.bz2", "#{shared_path}", :via => :scp
-        run "cd #{shared_path} && tar -jxf assets.tar.bz2 && rm assets.tar.bz2"
-        run_locally "rm public/assets.tar.bz2"
-        run_locally("rake assets:clean RAILS_ENV=#{rails_env}")
-      else
-        logger.info "#{changed_asset_count} assets have changed. Skipping asset pre-compilation"
-      end
-    end
-  end
-
 end
+
+set :default_environment, {
+    'PATH' => "#{deploy_to}/bin:$PATH",
+    'GEM_HOME' => "#{deploy_to}/gems"
+}
+
+namespace :gems do
+  task :bundle, :roles => :app do
+    run "cd #{release_path} && bundle install  --deployment --without development test"
+  end
+end
+
+namespace :custom do
+  task :settings_config, :roles => :app do
+    run "cp -f #{shared_path}/config/database.yml #{release_path}/config/database.yml"
+    #run "cp -f #{shared_path}/config/setup_mail.rb #{release_path}/config/initializers/setup_mail.rb"
+  end
+end
+
+namespace :custom do
+  task :deploy_static_assets, :roles => :app do
+    run "cp -r -f #{release_path}/public/assets/* #{assets_path}"
+  end
+end
+
+namespace :db do
+  task :migrate, :roles => :db do
+    run "cd #{release_path} && RAILS_ENV=production rake db:migrate"
+  end
+end
+
+after "deploy:update_code", "custom:settings_config"
+after "deploy:update_code", "gems:bundle"
+after "deploy:update_code", "custom:deploy_static_assets"
+after "deploy:update_code", "db:migrate"
