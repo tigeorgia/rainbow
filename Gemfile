@@ -19,7 +19,7 @@ gem 'psych', '~> 2.0.5' # yaml parser - default psych in rails has issues
 gem 'gon', '~> 5.0.4' # push data into js
 gem "dynamic_form", "~> 1.1.4" # to see form error messages
 gem "i18n-js", "~> 2.1.2" # to show translations in javascript
-gem "capistrano", "~> 2.12.0" # to deploy to server
+gem "capistrano", "~> 2.15.4" # to deploy to server
 gem "exception_notification", "~> 2.5.2" # send an email when exception occurs
 gem "useragent", :git => "https://github.com/jilion/useragent.git" # browser detection
 #gem "rails_autolink", "~> 1.0.9" # convert string to link if it is url
