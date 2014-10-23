@@ -1,10 +1,10 @@
-<% title "Rainbow" %>
+<% title t('app.common.app') %>
 
   <p>
-    Welcome to Rainbow, Transparency International Georgia's data-visualization catalog.
+    <%= t('root.welcome') %>
   </p>
   <p>
-    Here's the list of our data-visualizations:
+    <%= t('root.data-viz') %>:
     <ul>
       <li><%= link_to(t('app.common.budget_link'), budget_show_path(:locale => I18n.locale))%></li>
     </ul>

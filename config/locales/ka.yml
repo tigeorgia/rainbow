@@ -82,12 +82,13 @@ ka:
       confirm: დარწმუნებული ხართ?
       new: ახალი            
     common:
-      app_name: Rainbow project
-      budget_link: Georgian budget
+      app: ცისარტყელა
+      app_name: ცისარტყელას პროექტი
+      budget_link: საქართველოს ბიუჯეტი
       added_on: "დამატებულია: %{date}" 
       jumpstart: “ჯამპსტარტ ჯორჯია”
       js_link_title: “ჯამპსტარტ ჯორჯია” - ჩვენ გაწვდით მონაცემებს უკეთ!
-      ti_link_title: Transparency International Georgia
+      ti_link_title: საერთაშორისო გამჭვირვალობა - საქართველოს
     msgs:
       does_not_exist: თქვენ ცდილობთ ისეთი გვერდის ნახვას, რომელიც არ არსებობს.
       not_authorized: თქვენ არ გაქვთ ამ გვერდის ნახვის უფლება.
@@ -128,18 +129,23 @@ ka:
         p2: "თუ თქვენ არ მოგითხოვიათ პაროლის შეცვლა, გთხოვთ, არ მიაქციოთ ყურადღება ამ შეტყობინებას."
         p3: "თქვენი პაროლი იგივე დარჩება, სანამ არ გადახვალთ ზემოთ მითითებულ ბმულზე და შექმნით ახალ პაროლს."    
   budget:
-    Agriculture: სოფლის მეურნეობა
-    Culture: კულტურა
-    Education and Science: მეცნიერება და განათლება
-    Environmental: გარემოს დაცვა
-    Foreign Affairs: საგარეო საქმეები
-    Health and Social Affairs: ჯანდაცვა და სოციალური უზრუნველყოფა
-    Penitentiary: პენიტენციალური
-    Refugees and IDPS: ლტოლვილები და განსახლება
-    Regional Development and Infrastructure: რეგიონული განვითარება და ინფრასტრუქტურა
+    Agriculture: სოფლის მეურნეობის
+    Culture: კულტურის და ძეგლთა დაცვის
+    Education and Science: განათლების და მეცნიერების
+    Environmental: გარემოსა და ბუნებრივი რესურსების დაცვის
+    Foreign Affairs: საგარეო საქმეთა
+    Health and Social Affairs: ჯანდაცვის და სოციალური დაცვის პრიორიტეტები
+    Penitentiary: სასჯელაღსრულება და პრობაცია
+    Refugees and IDPS: იძულებით გადაადგილებული პირები და ლტოლვილები
+    Regional Development and Infrastructure: რეგიონული განვითარების და ინფრასტრუქტურის
     Sports and Youth Affairs: სპორტისა და ახალგაზრდობის საქმეები
-    Defence: თავდაცვა
-    Economy and Sustainable Development: ეკონომიკა და მდგრადი განვითარება
-    Finance: ფინანსთა
+    Defence: თავდაცვის
+    Economy and Sustainable Development: ეკონომიკისა და მდგრადი განვითარების
+    Finance: ფინანსები
     Justice: იუსტიცია
-    Order and Security: თავდაცვა
+    Order and Security: საზოგადოებრივი წესრიგის და უსაფრთხოების
+    Energy: ენერგეტიკის
+    Patriarchy: საპატრიარქოს
+  root:
+      welcome: მოგესალმებით (Rainbow-ზე) ცისარტყელაზე, “საერთაშორისო გამჭვირვალობა - საქართველოს“ მონაცემების ვიზუალიზაციის კატალოგში.
+      data-viz: მონაცემების ვიზუალიზაციის სია

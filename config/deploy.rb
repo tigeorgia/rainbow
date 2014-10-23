@@ -18,9 +18,11 @@ require "bundler/capistrano"
 
 ### STAGING ####
 set :app_path, "/home/tigeorgia/webapps"
-set :application, "rainbow_staging"
+set :application, "rainbow"
 set :deploy_to, "#{app_path}/#{application}"
 set :assets_path, "#{deploy_to}_static"
+set :rails_env, "production"
+set :environment, "production"
 role :web, "web331.webfaction.com"
 role :app, "web331.webfaction.com"
 role :db, "web331.webfaction.com", :primary => true
@@ -52,7 +54,7 @@ set :default_environment, {
 
 namespace :gems do
   task :bundle, :roles => :app do
-    run "cd #{release_path} && bundle install  --deployment --without development test"
+    run "cd #{release_path} && bundle install --deployment --without development test"
   end
 end
 
@@ -71,10 +73,11 @@ end
 
 namespace :db do
   task :migrate, :roles => :db do
-    run "cd #{release_path} && RAILS_ENV=production rake db:migrate"
+    run "cd #{release_path} && RAILS_ENV=#{environment} rake db:migrate"
   end
 end
 
+before  'deploy:assets:precompile', "custom:settings_config"
 after "deploy:update_code", "custom:settings_config"
 after "deploy:update_code", "gems:bundle"
 after "deploy:update_code", "custom:deploy_static_assets"

@@ -157,7 +157,7 @@ $(document).ready(function(){
             if (position.top < 180){
                 return "bottom";
             }else{
-                return "right";
+                return "top";
             }
         },
         title: function () {
@@ -205,22 +205,22 @@ $(document).ready(function(){
     //calculateAndShowData();
 
     $('body').on('focusout', function() {
-        var total_left = 0;
-        var total_right = 0;
+        var total_left = 0.000;
+        var total_right = 0.000;
 
         var count_left = 0;
         var count_right = 0;
 
         $('.amount-left', '#agriculture').each(function() {
             if ($(this).parents('.popover').length == 0) {
-                total_left += parseInt(this.value);
+                total_left += parseFloat(this.value);
                 count_left = count_left + 1;
             }
         });
 
         $('.amount-right').each(function() {
             if ($(this).parents('.popover').length == 0) {
-                total_right += parseInt(this.value);
+                total_right += parseFloat(this.value);
                 count_right = count_right + 1;
             }
         });
@@ -269,14 +269,3 @@ $(document).ready(function(){
 
 });
 
-
-/*$(window).scroll(function(){
-    $('#graphId').toggleClass('scrolling', $(window).scrollTop() > $('#midColId').offset().top);
-
-    //can be rewritten long form as:
-   /* var scrollPosition, headerOffset, isScrolling;
-    scrollPosition = $(window).scrollTop();
-    headerOffset = $('#header').offset().top;
-    isScrolling = scrollPosition > headerOffset;
-    $('#header-inner').toggleClass('scrolling', isScrolling);
-});*/

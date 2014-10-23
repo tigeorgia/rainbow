@@ -82,6 +82,7 @@ en:
       confirm: Are you sure?
       new: New
     common:
+      app: Rainbow
       app_name: Rainbow project
       budget_link: Georgian budget
       added_on: "Added on: %{date}" 
@@ -143,4 +144,10 @@ en:
     Finance: Finance
     Justice: Justice
     Order and Security: Order and Security
+    Energy: Energy
+    Patriarchy: Patriarchy
+    reset_page: Reset the page
+  root:
+    welcome: Welcome to Rainbow, Transparency International Georgia's data-visualization catalog.
+    data-viz: Here's the list of our data-visualizations
 
