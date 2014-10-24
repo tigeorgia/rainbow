@@ -33,7 +33,7 @@ role :db, "web331.webfaction.com", :primary => true
 ##########################
 
 set :scm, "git"
-set :branch, "popover"
+set :branch, "master"
 set :repository, "git://github.com/tigeorgia/rainbow.git"
 default_run_options[:pty] = true
 set :scm_username, "EtienneBaque"

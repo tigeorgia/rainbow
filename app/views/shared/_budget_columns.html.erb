@@ -1,6 +1,10 @@
-<div class="col-sm-12 column nopadding">
-  <div class="amountTransfer">ok</div>
+<div id="alert_section_id" class="col-sm-12 column nopadding" style="text-align: center;">
+  <!-- <div class="amountTransfer">ok</div> -->
+  <div class="alert alert-success">
+    <span class="alert_amount_message"><strong>Georgian budget 2014</strong> - Please move funds from a left program to one of the 3 main right programs.</span>
+  </div>
 </div>
+
 
 <!-- start left column -->
 <div class="col-sm-6 column nopadding">
@@ -15,7 +19,7 @@
                   </h4>
                 </div>
 
-                <div class="head hide"><%= cat_name %></div>
+                <div class="head hide"><strong><%= cat_name %></strong> (funds shown in millions of GEL)</div>
                 <div class="content hide">
                   <div class="panel-body">
                     <% items.each_with_index do |item, j| %>
@@ -64,7 +68,7 @@
                   </h4>
                 </div>
 
-                <div class="head hide"><%= cat_name %></div>
+                <div class="head hide"><strong><%= cat_name %></strong> (funds shown in millions of GEL)</div>
                 <div class="content hide">
                   <div class="panel-body">
                     <% items.each_with_index do |item, j| %>

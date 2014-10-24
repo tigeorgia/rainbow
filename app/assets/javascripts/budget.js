@@ -208,20 +208,15 @@ $(document).ready(function(){
         var total_left = 0.000;
         var total_right = 0.000;
 
-        var count_left = 0;
-        var count_right = 0;
-
         $('.amount-left', '#agriculture').each(function() {
             if ($(this).parents('.popover').length == 0) {
                 total_left += parseFloat(this.value);
-                count_left = count_left + 1;
             }
         });
 
         $('.amount-right').each(function() {
             if ($(this).parents('.popover').length == 0) {
                 total_right += parseFloat(this.value);
-                count_right = count_right + 1;
             }
         });
 
@@ -229,38 +224,65 @@ $(document).ready(function(){
         var diff_right = total_right - init_main;
 
         if (diff_left > 0){
+            $('#alert_section_id').removeClass('hide');
             // Funds are being transferred from the left column. But how much in relation to the numbers in right column?
             if (diff_right < diff_left){
                 // There is still some funds to transfer from the left column
-                $(".amountTransfer").each(function() {
-                    $(this).html((diff_left - diff_right).toString() + " need to be distributed.");
-                    $(this).removeClass().addClass("amountTransfer to_allocate");
+                $(".alert_amount_message").each(function() {
+                    $(this).html((diff_left - diff_right).toString() + " million(s) need to be distributed.");
+                });
+
+                $(".alert").each(function() {
+                    $(this).removeClass().addClass("alert alert-info");
                 });
 
             }else if (diff_right == diff_left){
                 // We're all good
-                $(".amountTransfer").each(function() {
-                    $(this).html("ok");
-                    $(this).removeClass().addClass("amountTransfer balance");
+                $(".alert_amount_message").each(function() {
+                    $(this).html("The funds have been distributed correctly.");
+                });
+
+                $(".alert").each(function() {
+                    $(this).removeClass().addClass("alert alert-success");
                 });
             }else{
                 // Too much has been allocated to the right column. More needs to be taken out of the left column.
-                $(".amountTransfer").each(function() {
-                    $(this).html("Too much was allocated on the 3 main programs. Please take " + (diff_right - diff_left).toString() + " from the other programs.");
-                    $(this).removeClass().addClass("amountTransfer to_putback");
+                $(".alert_amount_message").each(function() {
+                    $(this).html("Too much was allocated on the 3 main programs. Please take " + (diff_right - diff_left).toString() + " million(s) from the left programs.");
+                });
+
+                $(".alert").each(function() {
+                    $(this).removeClass().addClass("alert alert-danger");
                 });
             }
         }else if (diff_left < 0){
+            $('#alert_section_id').removeClass('hide');
             // Funds are being moved around on the left column.
-            $(".amountTransfer").each(function() {
-                $(this).html("Please re-allocate " + (Math.abs(diff_left)).toString() + " to the left programs.");
-                $(this).removeClass().addClass("amountTransfer to_movearound");
+            $(".alert_amount_message").each(function() {
+                $(this).html("Please re-allocate " + (Math.abs(diff_left)).toString() + " million(s) to the left programs.");
             });
 
+            $(".alert").each(function() {
+                $(this).removeClass().addClass("alert alert-warning");
+            });
+        }else if (diff_right > diff_left){
+            // Too much has been allocated to the right column. More needs to be taken out of the left column.
+            $(".alert_amount_message").each(function() {
+                $(this).html("Too much was allocated on the 3 main programs. Please take " + (diff_right - diff_left).toString() + " million(s) from the other programs.");
+            });
+
+            $(".alert").each(function() {
+                $(this).removeClass().addClass("alert alert-danger");
+            });
         }else{
-            $(".amountTransfer").each(function() {
-                $(this).html("ok");
-                $(this).removeClass().addClass("amountTransfer balance");
+            $('#alert_section_id').removeClass('hide');
+            // We're all good
+            $(".alert_amount_message").each(function() {
+                $(this).html("The funds have been distributed correctly.");
+            });
+
+            $(".alert").each(function() {
+                $(this).removeClass().addClass("alert alert-dismissable alert-success");
             });
         }
 
