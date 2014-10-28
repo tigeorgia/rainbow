@@ -64,7 +64,15 @@
     top: 0;
 }
 
+.popover {
+    font-size: 12px;
+}
+
 .popover-link {
     text-align: center;
+}
+
+.panel-title {
+    font-size: 14px !important;
 }
 

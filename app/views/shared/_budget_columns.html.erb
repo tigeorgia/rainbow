@@ -13,29 +13,29 @@
       <% @category_item.each_with_index do |(cat_name,items),i| %>
           <% if !@main_programs.include?cat_name %> <!-- We display the 7 first categories on the left hand side of the graph -->
               <div class="panel panel-default popover-markup">
-                <div id="link-popover-<%= i %>" class="panel-heading popover-link">
+                <div id="link-popover-<%= i+1 %>" class="panel-heading popover-link">
                   <h4 class="panel-title">
-                    <a href="#"><%= "#{t('budget.'+cat_name)}" %></a>
+                    <a href="#"><%= "#{t('budget.priorities.'+cat_name)}" %></a>
                   </h4>
                 </div>
 
-                <div class="head hide"><strong><%= cat_name %></strong> (funds shown in millions of GEL)</div>
+                <div class="head hide"><strong><%= "#{t('budget.priorities.'+cat_name)}" %></strong> (funds shown in millions of GEL)</div>
                 <div class="content hide">
                   <div class="panel-body">
-                    <% items.each_with_index do |item, j| %>
-                        <% if j % 2 == 0 %>
+                    <% items.each do |item| %>
+                        <% if item['index'] % 2 == 0 %>
                             <div class="row">
                               <div class="col-sm-6" style="padding: 5px;">
                                 <% if item['name'] != '' %>
-                                    <%= item['name'] %>
-                                    <%= text_field_tag "#{cat_name}-#{j.to_s}", item['amount'], class: "form-control amount amount-left #{cat_name.gsub(' ','_')}", autocomplete: 'off' %>
+                                    <span><%= t("budget.programs.#{item['name']}") %></span> <%= link_to(image_tag('icon-info.gif'),'#', title: t("budget.programs.#{item['name']}")) %>
+                                    <%= text_field_tag "#{cat_name}-#{item['index']}", item['amount'], class: "form-control amount amount-left #{cat_name.gsub(' ','_')}", autocomplete: 'off' %>
                                 <% end %>
                               </div>
                         <% else %>
                             <div class="col-sm-6" style="padding: 5px;">
                               <% if item['name'] != '' %>
-                                <%= item['name'] %>
-                                <%= text_field_tag "#{cat_name}-#{j.to_s}", item['amount'], class: "form-control amount amount-left #{cat_name.gsub(' ','_')}", autocomplete: 'off' %>
+                                <span><%= t("budget.programs.#{item['name']}") %></span> <%= link_to(image_tag('icon-info.gif'),'#', title: t("budget.programs.#{item['name']}")) %>
+                                <%= text_field_tag "#{cat_name}-#{item['index']}", item['amount'], class: "form-control amount amount-left #{cat_name.gsub(' ','_')}", autocomplete: 'off' %>
                               <% end %>
                             </div>
                             </div>
@@ -62,29 +62,29 @@
           <% if (@main_programs.include?cat_name) && (main_program == cat_name) %>
               <!-- We display the second half of the categories, on the right hand side, only one main program -->
               <div class="panel panel-default popover-markup">
-                <div id="link-popover-right-<%= i %>" class="panel-heading popover-link">
+                <div id="link-popover-right-<%= i+1 %>" class="panel-heading popover-link">
                   <h4 class="panel-title">
-                    <a href="#"><%= "#{t('budget.'+cat_name)}" %></a>
+                    <a href="#"><%= "#{t('budget.priorities.'+cat_name)}" %></a>
                   </h4>
                 </div>
 
-                <div class="head hide"><strong><%= cat_name %></strong> (funds shown in millions of GEL)</div>
+                <div class="head hide"><strong><%= "#{t('budget.priorities.'+cat_name)}" %></strong> (funds shown in millions of GEL)</div>
                 <div class="content hide">
                   <div class="panel-body">
-                    <% items.each_with_index do |item, j| %>
-                        <% if j % 2 == 0 %>
+                    <% items.each do |item| %>
+                        <% if item['index'] % 2 == 0 %>
                             <div class="row">
                               <div class="col-sm-6" style="padding: 5px;">
                                 <% if item['name'] != '' %>
-                                    <%= item['name'] %>
-                                    <%= text_field_tag "#{cat_name}-#{j.to_s}", item['amount'], class: "form-control amount amount-right #{cat_name.gsub(' ','_')}", autocomplete: 'off' %>
+                                    <%= t("budget.programs.#{item['name']}") %> <%= link_to(image_tag('icon-info.gif'),'#', title: t("budget.programs.#{item['name']}")) %>
+                                    <%= text_field_tag "#{cat_name}-#{item['index']}", item['amount'], class: "form-control amount amount-right #{cat_name.gsub(' ','_')}", autocomplete: 'off' %>
                                 <% end %>
                               </div>
                         <% else %>
                             <div class="col-sm-6" style="padding: 5px;">
                               <% if item['name'] != '' %>
-                                <%= item['name'] %>
-                                <%= text_field_tag "#{cat_name}-#{j.to_s}", item['amount'], class: "form-control amount amount-right #{cat_name.gsub(' ','_')}", autocomplete: 'off' %>
+                                <%= t("budget.programs.#{item['name']}") %> <%= link_to(image_tag('icon-info.gif'),'#', title: t("budget.programs.#{item['name']}")) %>
+                                <%= text_field_tag "#{cat_name}-#{item['index']}", item['amount'], class: "form-control amount amount-right #{cat_name.gsub(' ','_')}", autocomplete: 'off' %>
                               <% end %>
                             </div>
                             </div>

@@ -12,6 +12,8 @@
         var init_programs = <%= @total_programs %>;
         var init_main = <%= @total_main %>;
 
+        var amounts_hash = <%= raw @amount_hash.to_json %>;
+
     </script>
     <script src="http://d3js.org/d3.v3.min.js"></script>
     <!-- <script src="http://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3.js"></script> -->
@@ -30,17 +32,17 @@
 
   <!-- 'Agriculture' tab pane -->
   <div class="tab-pane active" id="agriculture">
-    <%= render 'shared/budget_columns', main_program: 'Agriculture' %>
+    <%= render 'shared/budget_columns', main_program: 'Priority 25' %>
   </div>
 
   <!-- 'Education and Science' tab pane -->
   <div class="tab-pane" id="education-science">
-    <%= render 'shared/budget_columns', main_program: 'Education and Science' %>
+    <%= render 'shared/budget_columns', main_program: 'Priority 23' %>
   </div>
 
   <!-- 'Health and Social Affairs' tab pane -->
   <div class="tab-pane" id="health">
-    <%= render 'shared/budget_columns', main_program: 'Health and Social Affairs' %>
+    <%= render 'shared/budget_columns', main_program: 'Priority 24' %>
   </div>
 
 </div>
