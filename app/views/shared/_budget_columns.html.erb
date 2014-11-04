@@ -15,7 +15,7 @@
               <div class="panel panel-default popover-markup">
                 <div id="link-popover-<%= i+1 %>" class="panel-heading popover-link">
                   <h4 class="panel-title">
-                    <a href="#"><%= "#{t('budget.priorities.'+cat_name)}" %></a>
+                    <a href="#" id="Priority-<%= i+1 %>-title"><%= "#{t('budget.priorities.'+cat_name)}" %></a>
                   </h4>
                 </div>
 
@@ -28,14 +28,14 @@
                               <div class="col-sm-6" style="padding: 5px;">
                                 <% if item['name'] != '' %>
                                     <span><%= t("budget.programs.#{item['name']}") %></span> <%= link_to(image_tag('icon-info.gif'),'#', title: t("budget.programs.#{item['name']}")) %>
-                                    <%= text_field_tag "#{cat_name}-#{item['index']}", item['amount'], class: "form-control amount amount-left #{cat_name.gsub(' ','_')}", autocomplete: 'off' %>
+                                    <%= text_field_tag "#{cat_name}-#{item['index']}-#{item['id']}", item['amount'], class: "form-control amount amount-left #{cat_name.gsub(' ','_')} #{cat_name.gsub(' ','_')}-#{item['index']}-#{item['id']}", autocomplete: 'off' %>
                                 <% end %>
                               </div>
                         <% else %>
                             <div class="col-sm-6" style="padding: 5px;">
                               <% if item['name'] != '' %>
                                 <span><%= t("budget.programs.#{item['name']}") %></span> <%= link_to(image_tag('icon-info.gif'),'#', title: t("budget.programs.#{item['name']}")) %>
-                                <%= text_field_tag "#{cat_name}-#{item['index']}", item['amount'], class: "form-control amount amount-left #{cat_name.gsub(' ','_')}", autocomplete: 'off' %>
+                                <%= text_field_tag "#{cat_name}-#{item['index']}-#{item['id']}", item['amount'], class: "form-control amount amount-left #{cat_name.gsub(' ','_')} #{cat_name.gsub(' ','_')}-#{item['index']}-#{item['id']}", autocomplete: 'off' %>
                               <% end %>
                             </div>
                             </div>
@@ -77,14 +77,14 @@
                               <div class="col-sm-6" style="padding: 5px;">
                                 <% if item['name'] != '' %>
                                     <%= t("budget.programs.#{item['name']}") %> <%= link_to(image_tag('icon-info.gif'),'#', title: t("budget.programs.#{item['name']}")) %>
-                                    <%= text_field_tag "#{cat_name}-#{item['index']}", item['amount'], class: "form-control amount amount-right #{cat_name.gsub(' ','_')}", autocomplete: 'off' %>
+                                    <%= text_field_tag "#{cat_name}-#{item['index']}-#{item['id']}", item['amount'], class: "form-control amount amount-right #{cat_name.gsub(' ','_')} #{cat_name.gsub(' ','_')}-#{item['index']}-#{item['id']}", autocomplete: 'off', disabled: true %>
                                 <% end %>
                               </div>
                         <% else %>
                             <div class="col-sm-6" style="padding: 5px;">
                               <% if item['name'] != '' %>
                                 <%= t("budget.programs.#{item['name']}") %> <%= link_to(image_tag('icon-info.gif'),'#', title: t("budget.programs.#{item['name']}")) %>
-                                <%= text_field_tag "#{cat_name}-#{item['index']}", item['amount'], class: "form-control amount amount-right #{cat_name.gsub(' ','_')}", autocomplete: 'off' %>
+                                <%= text_field_tag "#{cat_name}-#{item['index']}-#{item['id']}", item['amount'], class: "form-control amount amount-right #{cat_name.gsub(' ','_')} #{cat_name.gsub(' ','_')}-#{item['index']}-#{item['id']}", autocomplete: 'off', disabled: true %>
                               <% end %>
                             </div>
                             </div>
@@ -104,7 +104,7 @@
 <!-- end right column -->
 
 <div class="col-sm-12 column" style="padding-bottom: 20px;">
-  <button class="btn btn-success pull-right" data-toggle="modal" data-target="#myModal">
+  <button class="btn btn-success pull-right submit_budget_form">
     Show conclusion
   </button>
 </div>

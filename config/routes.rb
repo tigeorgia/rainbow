@@ -15,6 +15,7 @@ BootstrapStarter::Application.routes.draw do
 		end
 
     get "budget/show"
+    post "budget/process_budget", :to => "budget#process_budget"
 
 		root :to => 'root#index'
 	  match "*path", :to => redirect("/#{I18n.default_locale}") # handles /en/fake/path/whatever

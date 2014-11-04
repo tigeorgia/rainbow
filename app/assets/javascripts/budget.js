@@ -1,133 +1,3 @@
-var margin;
-var x;
-var y;
-var xAxis;
-
-margin = {top: 30, right: 10, bottom: 10, left: 10},
-    width = 460 - margin.left - margin.right,
-    height = 600 - margin.top - margin.bottom;
-
-var svg = d3.select("#chart_canvas").append("svg")
-    .attr("width", width + margin.left + margin.right)
-    .attr("height", height + margin.top + margin.bottom)
-    .append("g")
-    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-
-
-
-var init = function init() {
-
-    x = d3.scale.linear()
-        .range([0, width])
-
-    y = d3.scale.ordinal()
-        .rangeRoundBands([0, height], .2);
-
-    xAxis = d3.svg.axis()
-        .scale(x)
-        .orient("top");
-
-}
-
-/*var tip = d3.tip()
-    .attr('class', 'd3-tip')
-    .offset([0, 0])
-    .html(function(d) {
-        return "<strong>Name:</strong> <span style='color:red'>" + d.name + "</span><br>" +
-            "<strong>Value:</strong> <span style='color:red'>" + d.value+" millions</span>";
-    })
-
-svg.call(tip);*/
-
-function displayBars(svg, dataset){
-
-    xScale = x.domain(d3.extent(dataset, function(d) { return d.value; })).nice();
-    yScale = y.domain(dataset.map(function(d) { return d.name; }));
-
-    var svg_bar = svg.selectAll(".bar")
-        .data(dataset).enter();
-
-
-    var rect = svg_bar.append("rect")
-        .classed('data', true)
-        .attr("class", function(d) { return d.value < 0 ? "bar negative" : "bar positive"; })
-        .attr("x", function(d) { return x(Math.min(0, d.value)); })
-        .attr("y", function(d) { return y(d.name); })
-        .attr("width", function(d) { return Math.abs(x(d.value) - x(0)); })
-        .attr("height", y.rangeBand())
-        .on('mouseover', tip.show)
-        .on('mouseout', tip.hide);
-
-
-    svg.append("g")
-        .attr("class", "x axis")
-        .call(xAxis);
-
-    svg.append("g")
-        .attr("class", "y axis")
-        .append("line")
-        .attr("x1", x(0))
-        .attr("x2", x(0))
-        .attr("y2", height);
-
-    var text = svg_bar.append("text")
-        .classed('data', true)
-        .attr("x", function(d) { return x(Math.min(0, d.value) + 0.5); })
-        .attr("y", function(d) { return y(d.name)+ 18; })
-        .style("stroke-width", 1)
-        .style({"font-size":"12px","z-index":"999999999"})
-        .style("text-anchor", "left")
-        .text(function(d) { return d.name; });
-
-    svg.selectAll(".bar")
-        .data(dataset).transition()
-        .attr("class", function(d) { return d.value < 0 ? "bar negative" : "bar positive"; })
-        .attr("x", function(d) { return x(Math.min(0, d.value)); })
-        .attr("y", function(d) { return y(d.name); })
-        .attr("width", function(d) { return Math.abs(x(d.value) - x(0)); });
-
-    svg.selectAll(".data")
-        .data(dataset).transition()
-        .attr("x", function(d) { return x(Math.min(0, d.value) + 0.5); });
-
-
-    svg.selectAll(".x").transition().call(xAxis);
-
-    svg.selectAll(".y").selectAll("line").transition().attr("x1", x(0))
-        .attr("x2", x(0))
-        .attr("y2", height);
-
-
-}
-
-
-function type(d) {
-    d.value = +d.value;
-    return d;
-}
-
-function calculateAndShowData(){
-    var data = [];
-    for (var i=0;i < category_names_array.length;i++){
-        graph_bar = {};
-        var cat_name = category_names_array[i];
-        var input_name = input_names_array[i];
-        graph_bar['name'] = cat_name;
-        amount = 0.0
-        var class_to_target = "input."+input_name.split(' ').join('_')+"[type=text]"
-        $(class_to_target).each(function () {
-            if ($(this).parents('.popover').length == 0) {
-                amount = amount + parseInt(this.value / 1000000);
-            }
-        });
-        graph_bar['value'] = amount;
-        data[i] = graph_bar;
-    }
-
-    init();
-    displayBars(svg,data);
-}
-
 $(document).ready(function(){
 
     var left_old_id = "";
@@ -138,11 +8,15 @@ $(document).ready(function(){
     var old_id = "";
     var current_id = "";
 
-    var transfer_amount = 0.000;
-    var added_amount = 0.000;
+    var transfer_amount = 0.0;
+    var added_amount = 0.0;
     var origin_id = "";
     var target_id = "";
-
+    var priority_origin = "";
+    var program_title = "";
+    var popover_index = "";
+    var origin_item_id = 0;
+    var target_item_id = 0;
 
     $('.nav-tabs').on('click', '.tab-label', function (e) {
         $('.popover-link').each(function () {
@@ -202,69 +76,93 @@ $(document).ready(function(){
 
     }).on("show.bs.popover", function(){ $(this).data("bs.popover").tip().css("max-width", "540px"); });
 
+    // Events to trigger, after we get out of the left-hand side column
     $('body').on('focusout', '.amount-left', function() {
         var edited_val = $(this).val()
-        var this_id = $(this).attr('id');
-        $('.popover-markup').find('#'+this_id).attr('value', edited_val);
+        origin_id = $(this).attr('id');
+        $('.popover-markup').find('#'+origin_id).attr('value', edited_val);
+        transfer_amount = parseFloat(amounts_hash[origin_id]).toFixed(3) - parseFloat(edited_val).toFixed(3);
+        transfer_amount = transfer_amount.toFixed(3);
+        popover_index = origin_id.split('_')[1].split('-')[0];
+        origin_item_id = origin_id.split('_')[1].split('-')[2];
+        priority_origin = $('#Priority-'+popover_index+'-title').text();
 
-        // If we focus out of a left sub-program, we first need to disable all other left-hand side inputs.
-
-        // First, we define the id of the input where the change was operated. We also get its new amount.
-        Object.keys(amounts_hash).forEach(function (amount_key) {
-            var is_a_main_program = (amount_key.indexOf("23") > -1) || (amount_key.indexOf("24") > -1) || (amount_key.indexOf("25") > -1);
-            if (!is_a_main_program && amounts_hash[amount_key] != $("#"+amount_key).val()){
-                transfer_amount = parseFloat(amounts_hash[amount_key]) - parseFloat($("#"+amount_key).val());
-                origin_id = amount_key;
-            }
-        })
-
-        if (transfer_amount != 0.000){
+        if (transfer_amount > 0.000){
             // Amount is being transferred from a field, we need to deactivate the other fields.
             Object.keys(amounts_hash).forEach(function (amount_key) {
                 var is_a_main_program = (amount_key.indexOf("23") > -1) || (amount_key.indexOf("24") > -1) || (amount_key.indexOf("25") > -1);
                 if (amount_key != origin_id && !is_a_main_program && !$("#"+amount_key).disabled){
-                    $("#"+amount_key).prop('disabled', true);
+                    $("."+amount_key).prop('disabled', true);
+                }
+                if (is_a_main_program){
+                    $("."+amount_key).prop('disabled', false);
                 }
             })
 
-            var program_title = $("#"+origin_id).siblings("span").html();
+            program_title = $("#"+origin_id).siblings("span").html();
 
             $(".alert_amount_message").each(function() {
-                $(this).html((transfer_amount).toString() + " million(s) have been taken from '"+program_title+"'. Distribute it to a right-hand side program.");
+                $(this).html(parseFloat(transfer_amount) + " million(s) have been taken from '"+program_title+"' ("+priority_origin+"). Distribute it to a right-hand side program.");
             });
 
             $(".alert").each(function() {
                 $(this).removeClass().addClass("alert alert-info");
             });
+        }else if (transfer_amount < 0.000){
+            $('#alert_section_id').removeClass('hide');
+
+            $("#"+origin_id).val(amounts_hash[origin_id]);
+            $('.popover-markup').find('#'+origin_id).attr('value', amounts_hash[origin_id]);
+
+            program_title = $("#"+origin_id).siblings("span").html();
+            // Funds are being moved around on the left column.
+            $(".alert_amount_message").each(function() {
+                $(this).html("Funds cannot be redistributed within the left column. The '"+program_title+"' program ("+priority_origin+") has been reset.");
+            });
+
+            $(".alert").each(function() {
+                $(this).removeClass().addClass("alert alert-warning");
+            });
+
+            $(".popover-link").popover('hide');
+
         }
 
-        // In order to see the disabled fields which are in the same popover as the modified text field,
-        // we need to close and re-open this popover.
-        var popover_index = origin_id.split('_')[1].split('-')[0];
-        $("#link-popover-"+popover_index).popover('hide');
     });
 
+    // Events to trigger, after we get out of the right-hand side column
     $('body').on('focusout', '.amount-right', function() {
         var edited_val = $(this).val()
-        var this_id = $(this).attr('id');
-        $('.popover-markup').find('#'+this_id).attr('value', edited_val);
+        target_id = $(this).attr('id');
+        target_item_id = target_id.split('_')[1].split('-')[2];
+        var target_index = target_id.split('_')[1].split('-')[0];
+        $('.popover-markup').find('#'+target_id).attr('value', edited_val);
+        added_amount = parseFloat(edited_val).toFixed(3) - parseFloat(amounts_hash[target_id]).toFixed(3);
+        added_amount = added_amount.toFixed(3);
 
-        // At this point, the amount has been assigned to a field on the right column.
-        // If the correct amount has been transferred, we need to re-enable text fields.
-        Object.keys(amounts_hash).forEach(function (amount_key) {
-            var is_a_main_program = (amount_key.indexOf("23") > -1) || (amount_key.indexOf("24") > -1) || (amount_key.indexOf("25") > -1);
-            if (is_a_main_program && amounts_hash[amount_key] != $("#"+amount_key).val()){
-                added_amount = parseFloat($("#"+amount_key).val()) - parseFloat(amounts_hash[amount_key]);
-                target_id = amount_key;
-            }
-        })
-
-        if ((added_amount > 0.0 && transfer_amount <= added_amount)|| added_amount < 0.0){
+        if ((added_amount > 0.0 && transfer_amount <= added_amount) || added_amount < 0.0){
             if (added_amount > 0.0){
                 if (transfer_amount == added_amount){
                     // The amount was added correctly. We record the change in the hash object, and re-enable the fields.
                     amounts_hash[origin_id] = amounts_hash[origin_id] - transfer_amount;
                     amounts_hash[target_id] = amounts_hash[target_id] + added_amount;
+
+                    // We add this information to the tracked_changes hash.
+                    tracked_changes[origin_item_id]['amount_taken'] = parseFloat(tracked_changes[origin_item_id]['amount_taken']) + parseFloat(added_amount);
+                    if (!(target_id in tracked_changes[origin_item_id]['target'])){
+                        tracked_changes[origin_item_id]['target'][target_item_id] = parseFloat(added_amount);
+                    }else{
+                        tracked_changes[origin_item_id]['target'][target_item_id] = parseFloat(tracked_changes[origin_item_id]['target'][target_item_id]) + parseFloat(added_amount);
+                    }
+
+                    $(".alert_amount_message").each(function() {
+                        $(this).html("The funds have been distributed correctly.");
+                    });
+
+                    $(".alert").each(function() {
+                     $(this).removeClass().addClass("alert alert-success");
+                    });
+
                 }else if (transfer_amount < added_amount){
                     // Too much was added in the right-hand side column.
                     // We need to reset the amounts on both side.
@@ -272,12 +170,6 @@ $(document).ready(function(){
                     $("#"+target_id).val(amounts_hash[target_id]);
                     $('.popover-markup').find('#'+origin_id).attr('value', amounts_hash[origin_id]);
                     $('.popover-markup').find('#'+target_id).attr('value', amounts_hash[target_id]);
-
-                    var popover_index = origin_id.split('_')[1].split('-')[0];
-                    $("#link-popover-"+popover_index).popover('hide');
-                    popover_index = target_id.split('_')[1].split('-')[0];
-                    $("#link-popover-"+popover_index).popover('hide');
-                    alert("test");
 
                     $(".alert_amount_message").each(function() {
                         $(this).html("Too much was allocated on this main program. The 2 lastly modified amounts were reset.");
@@ -288,6 +180,9 @@ $(document).ready(function(){
                     });
 
                 }
+
+                $(".popover-link").popover('hide');
+
             }else if (added_amount < 0.0){
                 // Funds were taken out from a right-hand column field, instead of being added. We raise an error, and reset the fields with the initial amounts.
                 $("#"+origin_id).val(amounts_hash[origin_id]);
@@ -295,106 +190,87 @@ $(document).ready(function(){
                 $('.popover-markup').find('#'+origin_id).attr('value', amounts_hash[origin_id]);
                 $('.popover-markup').find('#'+target_id).attr('value', amounts_hash[target_id]);
 
-                var popover_index = origin_id.split('_')[1].split('-')[0];
-                $("#link-popover-"+popover_index).popover('hide');
-                popover_index = target_id.split('_')[1].split('-')[0];
-                $("#link-popover-"+popover_index).popover('hide');
-            }
-            // We re-enable the fields.
-            Object.keys(amounts_hash).forEach(function (amount_key) {
-                var is_a_main_program = (amount_key.indexOf("23") > -1) || (amount_key.indexOf("24") > -1) || (amount_key.indexOf("25") > -1);
-                if (!is_a_main_program){
-                    $("#"+amount_key).removeAttr('disabled');
-                }
-            })
-        }
+                // There's been an error: we reset the amounts that were in transfer, and we disable fields back to their initial state (ie disable all right hand side fields)
+                $(".popover-link").popover('hide');
 
-    });
+                Object.keys(amounts_hash).forEach(function (amount_key) {
+                    var is_a_main_program = (amount_key.indexOf("23") > -1) || (amount_key.indexOf("24") > -1) || (amount_key.indexOf("25") > -1);
+                    if (amount_key != origin_id && !is_a_main_program && !$("#"+amount_key).disabled){
+                        $("."+amount_key).prop('disabled', false);
+                    }
+                    if (is_a_main_program){
+                        $("."+amount_key).prop('disabled', true);
+                    }
+                })
 
-    // When we focus out of a field, what notification message to display?
-    $('body').on('focusout', function() {
-        var total_left = 0.000;
-        var total_right = 0.000;
-
-        $('.amount-left', '#agriculture').each(function() {
-            if ($(this).parents('.popover').length == 0) {
-                total_left += parseFloat(this.value);
-            }
-        });
-
-        $('.amount-right').each(function() {
-            if ($(this).parents('.popover').length == 0) {
-                total_right += parseFloat(this.value);
-            }
-        });
-
-        var diff_left = (init_programs - total_left).toFixed(3);
-        var diff_right = (total_right - init_main).toFixed(3);
-
-        if (diff_left > 0){
-            $('#alert_section_id').removeClass('hide');
-            // Funds are being transferred from the left column. But how much in relation to the numbers in right column?
-            if (diff_right < diff_left){
-                // There is still some funds to transfer from the left column
-                /*$(".alert_amount_message").each(function() {
-                    $(this).html((diff_left - diff_right).toString() + " million(s) need to be distributed.");
-                });
-
-                $(".alert").each(function() {
-                    $(this).removeClass().addClass("alert alert-info");
-                });*/
-
-            }else if (diff_right == diff_left){
-                // We're all good
-                /*$(".alert_amount_message").each(function() {
-                    $(this).html("The funds have been distributed correctly.");
-                });*/
-
-                /*$(".alert").each(function() {
-                    $(this).removeClass().addClass("alert alert-success");
-                });*/
-            }else{
-                // Too much has been allocated to the right column. More needs to be taken out of the left column.
+                // Displaying the error message
                 $(".alert_amount_message").each(function() {
-                    $(this).html("Too much was allocated on the 3 main programs. Please take " + (diff_right - diff_left).toString() + " million(s) from the left programs.");
+                    $(this).html("You can't take money out of a right-hand side column, while transferring.");
                 });
 
                 $(".alert").each(function() {
                     $(this).removeClass().addClass("alert alert-danger");
                 });
             }
-        }else if (diff_left < 0){
-            $('#alert_section_id').removeClass('hide');
-            // Funds are being moved around on the left column.
+            // We re-enable the fields, and disable the right-hand side fields.
+            Object.keys(amounts_hash).forEach(function (amount_key) {
+                var is_a_main_program = (amount_key.indexOf("23") > -1) || (amount_key.indexOf("24") > -1) || (amount_key.indexOf("25") > -1);
+                if (!is_a_main_program){
+                    $("."+amount_key).prop("disabled", false);
+                }else{
+                    $("."+amount_key).prop("disabled", true);
+                }
+            })
+        }else if (added_amount > 0.0 && added_amount <= transfer_amount){
+            // Funds have been allocated to a program on the right-hand side column, but there is still some that remains to allocate.
+
+            amounts_hash[origin_id] = amounts_hash[origin_id] - added_amount;
+            amounts_hash[target_id] = amounts_hash[target_id] + added_amount;
+
+            // We add this information to the tracked_changes hash.
+            tracked_changes[origin_item_id]['amount_taken'] = parseFloat(tracked_changes[origin_item_id]['amount_taken']) + parseFloat(added_amount);
+            if (!(target_id in tracked_changes[origin_item_id]['target'])){
+                tracked_changes[origin_item_id]['target'][target_item_id] = parseFloat(added_amount);
+            }else{
+                tracked_changes[origin_item_id]['target'][target_item_id] = parseFloat(tracked_changes[origin_item_id]['target'][target_item_id]) + parseFloat(added_amount);
+            }
+
+            transfer_amount = transfer_amount - added_amount;
+
             $(".alert_amount_message").each(function() {
-                $(this).html("Please re-allocate " + (Math.abs(diff_left)).toString() + " million(s) to the left programs.");
+                $(this).html((transfer_amount).toString() + " million(s) from '"+program_title+"' ("+priority_origin+") are still to be allocated. Distribute it to a right-hand side program.");
             });
 
             $(".alert").each(function() {
-                $(this).removeClass().addClass("alert alert-warning");
+                $(this).removeClass().addClass("alert alert-info");
             });
-        }else if (diff_right > diff_left){
-            // Too much has been allocated to the right column. More needs to be taken out of the left column.
-            $(".alert_amount_message").each(function() {
-                $(this).html("Too much was allocated on the 3 main programs. Please take " + (diff_right - diff_left).toString() + " million(s) from the other programs.");
-            });
-
-            $(".alert").each(function() {
-                $(this).removeClass().addClass("alert alert-danger");
-            });
-        }else{
-            /*$('#alert_section_id').removeClass('hide');
-            // We're all good
-            $(".alert_amount_message").each(function() {
-                $(this).html("The funds have been distributed correctly.");
-            });
-
-            $(".alert").each(function() {
-                $(this).removeClass().addClass("alert alert-dismissable alert-success");
-            });*/
         }
 
-        //calculateAndShowData();
+    });
+
+    // Events to fire (POST ajax call...) when clicking on 'Show conclusions'
+    $('.submit_budget_form').click(function () {
+        var test = {};
+        test["abc"] = "1";
+
+        var posting = $.post( "/ka/budget/process_budget", {data: tracked_changes});
+        posting .done(function( statements ) {
+            if (statements.length > 0){
+                var html_for_popup = '<ul>';
+                $.each(statements, function(index) {
+                    html_for_popup = html_for_popup + '<li>'+statements[index]+'</li>'
+                });
+                html_for_popup = html_for_popup + '</ul>'
+                $('#trigger-popup-body').html(html_for_popup);
+            }
+
+            var options = {
+                "backdrop" : "static",
+                "show" : true
+            }
+
+            $('#myModal').modal(options);
+        });
     });
 
 });

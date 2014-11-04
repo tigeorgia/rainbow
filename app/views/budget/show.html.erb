@@ -13,10 +13,9 @@
         var init_main = <%= @total_main %>;
 
         var amounts_hash = <%= raw @amount_hash.to_json %>;
+        var tracked_changes = <%= raw @tracked_changes.to_json %>;
 
     </script>
-    <script src="http://d3js.org/d3.v3.min.js"></script>
-    <!-- <script src="http://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3.js"></script> -->
 
 <% end %>
 
@@ -55,13 +54,7 @@
         <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
         <h4 class="modal-title" id="myModalLabel">Conclusion</h4>
       </div>
-      <div class="modal-body">
-        List of consequences, triggered by user's input:
-        <ul>
-          <li>Consequence 1</li>
-          <li>Consequence 2</li>
-          <li>Consequence 3</li>
-        </ul>
+      <div class="modal-body" id="trigger-popup-body">
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
