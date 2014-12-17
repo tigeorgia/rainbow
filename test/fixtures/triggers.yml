@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  code: MyString
+  percent_start: 1
+  percent_end: 1
+  description: MyText
+
+two:
+  code: MyString
+  percent_start: 1
+  percent_end: 1
+  description: MyText

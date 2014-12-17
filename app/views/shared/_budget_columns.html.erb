@@ -1,7 +1,7 @@
 <div id="alert_section_id" class="col-sm-12 column nopadding" style="text-align: center;">
   <!-- <div class="amountTransfer">ok</div> -->
   <div class="alert alert-success">
-    <span class="alert_amount_message"><strong>Georgian budget 2014</strong> - Please move funds from a left program to one of the 3 main right programs.</span>
+    <span class="alert_amount_message"><strong><%= t('budget.georgian_budget_2014') %></strong> - <%= t('budget.please_move_funds') %></span>
   </div>
 </div>
 
@@ -19,7 +19,7 @@
                   </h4>
                 </div>
 
-                <div class="head hide"><strong><%= "#{t('budget.priorities.'+cat_name)}" %></strong> (funds shown in millions of GEL)</div>
+                <div class="head hide"><strong><%= "#{t('budget.priorities.'+cat_name)}" %></strong> <%= t('budget.funds_shown_millions') %></div>
                 <div class="content hide">
                   <div class="panel-body">
                     <% items.each do |item| %>
@@ -68,7 +68,7 @@
                   </h4>
                 </div>
 
-                <div class="head hide"><strong><%= "#{t('budget.priorities.'+cat_name)}" %></strong> (funds shown in millions of GEL)</div>
+                <div class="head hide"><strong><%= "#{t('budget.priorities.'+cat_name)}" %></strong> <%= t('budget.funds_shown_millions') %></div>
                 <div class="content hide">
                   <div class="panel-body">
                     <% items.each do |item| %>
@@ -105,6 +105,6 @@
 
 <div class="col-sm-12 column" style="padding-bottom: 20px;">
   <button class="btn btn-success pull-right submit_budget_form">
-    Show conclusion
+    <%= t('budget.conclusion_title') %>
   </button>
 </div>

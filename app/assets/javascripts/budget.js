@@ -90,7 +90,7 @@ $(document).ready(function(){
         if (transfer_amount > 0.000){
             // Amount is being transferred from a field, we need to deactivate the other fields.
             Object.keys(amounts_hash).forEach(function (amount_key) {
-                var is_a_main_program = (amount_key.indexOf("23") > -1) || (amount_key.indexOf("24") > -1) || (amount_key.indexOf("25") > -1);
+                var is_a_main_program = (amount_key.indexOf("_23") > -1) || (amount_key.indexOf("_24") > -1) || (amount_key.indexOf("_25") > -1);
                 if (amount_key != origin_id && !is_a_main_program && !$("#"+amount_key).disabled){
                     $("."+amount_key).prop('disabled', true);
                 }
@@ -102,7 +102,7 @@ $(document).ready(function(){
             program_title = $("#"+origin_id).siblings("span").html();
 
             $(".alert_amount_message").each(function() {
-                $(this).html(parseFloat(transfer_amount) + " million(s) have been taken from '"+program_title+"' ("+priority_origin+"). Distribute it to a right-hand side program.");
+                $(this).html(parseFloat(transfer_amount) + " " + translations['money_taken_from'] + " '"+program_title+"' ("+priority_origin+"). " + translations['distribute_it_to_right']);
             });
 
             $(".alert").each(function() {
@@ -117,7 +117,7 @@ $(document).ready(function(){
             program_title = $("#"+origin_id).siblings("span").html();
             // Funds are being moved around on the left column.
             $(".alert_amount_message").each(function() {
-                $(this).html("Funds cannot be redistributed within the left column. The '"+program_title+"' program ("+priority_origin+") has been reset.");
+                $(this).html(translations['funds_cannot_be_redistributed'] + " '"+program_title+"' ("+priority_origin+") " + translations['program_reset']);
             });
 
             $(".alert").each(function() {
@@ -126,13 +126,33 @@ $(document).ready(function(){
 
             $(".popover-link").popover('hide');
 
+        }else{
+            // The transfer amount has been put back to its original left-hand side program.
+            $(".alert_amount_message").each(function() {
+                $(this).html(translations['funds_distributed_correctly']);
+            });
+
+            $(".alert").each(function() {
+                $(this).removeClass().addClass("alert alert-success");
+            });
+
+            // We re-enable all the left-hand side fields, and disable the right-hand side fields.
+            Object.keys(amounts_hash).forEach(function (amount_key) {
+                var is_a_main_program = (amount_key.indexOf("_23") > -1) || (amount_key.indexOf("_24") > -1) || (amount_key.indexOf("_25") > -1);
+                if (!is_a_main_program){
+                    $("."+amount_key).prop("disabled", false);
+                }else{
+                    $("."+amount_key).prop("disabled", true);
+                }
+            })
+
         }
 
     });
 
     // Events to trigger, after we get out of the right-hand side column
     $('body').on('focusout', '.amount-right', function() {
-        var edited_val = $(this).val()
+        var edited_val = $(this).val();
         target_id = $(this).attr('id');
         target_item_id = target_id.split('_')[1].split('-')[2];
         var target_index = target_id.split('_')[1].split('-')[0];
@@ -149,6 +169,8 @@ $(document).ready(function(){
 
                     // We add this information to the tracked_changes hash.
                     tracked_changes[origin_item_id]['amount_taken'] = parseFloat(tracked_changes[origin_item_id]['amount_taken']) + parseFloat(added_amount);
+                    tracked_changes[target_item_id]['amount_added'] = parseFloat(tracked_changes[target_item_id]['amount_added']) + parseFloat(added_amount);
+
                     if (!(target_id in tracked_changes[origin_item_id]['target'])){
                         tracked_changes[origin_item_id]['target'][target_item_id] = parseFloat(added_amount);
                     }else{
@@ -156,7 +178,7 @@ $(document).ready(function(){
                     }
 
                     $(".alert_amount_message").each(function() {
-                        $(this).html("The funds have been distributed correctly.");
+                        $(this).html(translations['funds_distributed_correctly']);
                     });
 
                     $(".alert").each(function() {
@@ -172,7 +194,7 @@ $(document).ready(function(){
                     $('.popover-markup').find('#'+target_id).attr('value', amounts_hash[target_id]);
 
                     $(".alert_amount_message").each(function() {
-                        $(this).html("Too much was allocated on this main program. The 2 lastly modified amounts were reset.");
+                        $(this).html(translations['too_much_allocated']);
                     });
 
                     $(".alert").each(function() {
@@ -194,7 +216,7 @@ $(document).ready(function(){
                 $(".popover-link").popover('hide');
 
                 Object.keys(amounts_hash).forEach(function (amount_key) {
-                    var is_a_main_program = (amount_key.indexOf("23") > -1) || (amount_key.indexOf("24") > -1) || (amount_key.indexOf("25") > -1);
+                    var is_a_main_program = (amount_key.indexOf("_23") > -1) || (amount_key.indexOf("_24") > -1) || (amount_key.indexOf("_25") > -1);
                     if (amount_key != origin_id && !is_a_main_program && !$("#"+amount_key).disabled){
                         $("."+amount_key).prop('disabled', false);
                     }
@@ -205,7 +227,7 @@ $(document).ready(function(){
 
                 // Displaying the error message
                 $(".alert_amount_message").each(function() {
-                    $(this).html("You can't take money out of a right-hand side column, while transferring.");
+                    $(this).html(translations['cannot_take_money_right']);
                 });
 
                 $(".alert").each(function() {
@@ -214,7 +236,7 @@ $(document).ready(function(){
             }
             // We re-enable the fields, and disable the right-hand side fields.
             Object.keys(amounts_hash).forEach(function (amount_key) {
-                var is_a_main_program = (amount_key.indexOf("23") > -1) || (amount_key.indexOf("24") > -1) || (amount_key.indexOf("25") > -1);
+                var is_a_main_program = (amount_key.indexOf("_23") > -1) || (amount_key.indexOf("_24") > -1) || (amount_key.indexOf("_25") > -1);
                 if (!is_a_main_program){
                     $("."+amount_key).prop("disabled", false);
                 }else{
@@ -229,6 +251,8 @@ $(document).ready(function(){
 
             // We add this information to the tracked_changes hash.
             tracked_changes[origin_item_id]['amount_taken'] = parseFloat(tracked_changes[origin_item_id]['amount_taken']) + parseFloat(added_amount);
+            tracked_changes[target_item_id]['amount_added'] = parseFloat(tracked_changes[target_item_id]['amount_added']) + parseFloat(added_amount);
+
             if (!(target_id in tracked_changes[origin_item_id]['target'])){
                 tracked_changes[origin_item_id]['target'][target_item_id] = parseFloat(added_amount);
             }else{
@@ -238,7 +262,9 @@ $(document).ready(function(){
             transfer_amount = transfer_amount - added_amount;
 
             $(".alert_amount_message").each(function() {
-                $(this).html((transfer_amount).toString() + " million(s) from '"+program_title+"' ("+priority_origin+") are still to be allocated. Distribute it to a right-hand side program.");
+                var text_message = String.format(translations['money_still_to_be_allocated'].format((transfer_amount).toString(), program_title+"' ("+priority_origin+")"));
+                $(this).html(text_message);
+                //$(this).html((transfer_amount).toString() + " million(s) from '"+program_title+"' ("+priority_origin+") are still to be allocated. Distribute it to a right-hand side program.");
             });
 
             $(".alert").each(function() {
@@ -255,13 +281,24 @@ $(document).ready(function(){
 
         var posting = $.post( "/ka/budget/process_budget", {data: tracked_changes});
         posting .done(function( statements ) {
-            if (statements.length > 0){
+            if (statements['left'].length > 0){
                 var html_for_popup = '<ul>';
-                $.each(statements, function(index) {
-                    html_for_popup = html_for_popup + '<li>'+statements[index]+'</li>'
+                $.each(statements['left'], function(index) {
+                    html_for_popup = html_for_popup + '<li>'+statements['left'][index]+'</li>'
                 });
                 html_for_popup = html_for_popup + '</ul>'
-                $('#trigger-popup-body').html(html_for_popup);
+                //$('#trigger-popup-body').html(html_for_popup);
+                $('#left-hand').html(html_for_popup);
+            }
+
+            if (statements['right'].length > 0){
+                var html_for_popup = '<ul>';
+                $.each(statements['right'], function(index) {
+                    html_for_popup = html_for_popup + '<li>'+statements['right'][index]+'</li>'
+                });
+                html_for_popup = html_for_popup + '</ul>'
+                //$('#trigger-popup-body').html(html_for_popup);
+                $('#right-hand').html(html_for_popup);
             }
 
             var options = {

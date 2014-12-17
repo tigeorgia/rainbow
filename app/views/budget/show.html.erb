@@ -15,6 +15,8 @@
         var amounts_hash = <%= raw @amount_hash.to_json %>;
         var tracked_changes = <%= raw @tracked_changes.to_json %>;
 
+        var translations = <%= @tranlations_for_scripts.to_json.html_safe %>;
+
     </script>
 
 <% end %>
@@ -52,12 +54,25 @@
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-        <h4 class="modal-title" id="myModalLabel">Conclusion</h4>
+        <h4 class="modal-title" id="myModalLabel"><%= t('budget.conclusion_title') %></h4>
       </div>
       <div class="modal-body" id="trigger-popup-body">
+        <ul class="nav nav-tabs">
+          <li class="active tab-label"><a href="#left-hand" role="tab" data-toggle="tab">Left-hand column</a></li>
+          <li class="tab-label"><a href="#right-hand" role="tab" data-toggle="tab">Right-hand column</a></li>
+        </ul>
+
+        <!-- Popup Tab panes -->
+        <div class="tab-content">
+          <div class="tab-pane active" id="left-hand">
+          </div>
+          <div class="tab-pane" id="right-hand">
+          </div>
+        </div>
+
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal"><%= t('close_continue') %></button>
         <%= link_to(t('budget.reset_page'), budget_show_path(:locale => I18n.locale), class: 'btn btn-primary' )%>
       </div>
     </div>

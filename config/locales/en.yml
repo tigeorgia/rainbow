@@ -128,6 +128,16 @@ en:
         link_title: Change my password
         p2: "If you didn't request this, please ignore this email."
         p3: "Your password won't change until you access the link above and create a new one."
+  scripts_messages:
+      funds_distributed_correctly: The funds have been distributed correctly.
+      distribute_it_to_right: Distribute it to a right-hand side program
+      funds_cannot_be_redistributed: Funds cannot be redistributed within the left column.
+      program_reset: program has been reset.
+      too_much_allocated: Too much was allocated on this main program. The 2 lastly modified amounts were reset.
+      cannot_take_money_right: You can't take money out of a right-hand side column, while transferring.
+      money_still_to_be_allocated: "{0} million(s) from {1} are still to be allocated. Distribute it to a right-hand side program."
+      money_taken_from: million(s) have been taken from
+      money_added_to: million(s) have been added to
   budget:
     Agriculture: Agriculture
     Culture: Culture
@@ -147,6 +157,11 @@ en:
     Energy: Energy
     Patriarchy: Patriarchy
     reset_page: Reset the page
+    georgian_budget_2014: საქართველოს ბიუჯეტი 2014
+    please_move_funds: Please move funds from a left program to one of the 3 main right programs.
+    conclusion_title: What's going to happen?
+    funds_shown_millions: (funds shown in millions of GEL)
+    close_continue: Continue transferring funds
     priorities:
       Priority 1: Priority 1
       Priority 2: Priority 2

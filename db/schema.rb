@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140912115851) do
+ActiveRecord::Schema.define(:version => 20141104120825) do
 
   create_table "categories", :force => true do |t|
     t.string   "name"
@@ -35,6 +35,7 @@ ActiveRecord::Schema.define(:version => 20140912115851) do
     t.integer  "category_id"
     t.datetime "created_at",  :null => false
     t.datetime "updated_at",  :null => false
+    t.string   "code"
   end
 
   add_index "items", ["category_id"], :name => "index_items_on_category_id"
@@ -58,6 +59,15 @@ ActiveRecord::Schema.define(:version => 20140912115851) do
   end
 
   add_index "pages", ["name"], :name => "index_pages_on_name"
+
+  create_table "triggers", :force => true do |t|
+    t.string   "code"
+    t.integer  "percent_start"
+    t.integer  "percent_end"
+    t.text     "description"
+    t.datetime "created_at",    :null => false
+    t.datetime "updated_at",    :null => false
+  end
 
   create_table "users", :force => true do |t|
     t.string   "email",                  :default => "", :null => false
