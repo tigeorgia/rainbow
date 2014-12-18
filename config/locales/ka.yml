@@ -160,8 +160,10 @@ ka:
     please_move_funds: გთხოვთ გადაიტანოთ თანხა მარცხენა პროგრამიდან მარჯვენა სამი მთავარი პროგრამიდან ერთ-ერთში.
     conclusion_title: რა შეიძლება მოხდეს?
     funds_shown_millions: (თანხა ნაჩვენებია მილიონ ლარებში)
-    close_continue: Continue transferring funds
-    reset_page: Reset the page
+    close_continue: გაგრძელდეს თანხის გადარიცხვა
+    reset_page: გვერდის გადატვირთვა
+    left_hand_tab: შემცირდება sum-ით
+    right_hand_tab: გაიზრდება sum-ით
     priorities:
       Priority 1: პარლამენტი
       Priority 2: საქართველოს მთავრობის ადმინისტრაცია და საჯარო სამსახური

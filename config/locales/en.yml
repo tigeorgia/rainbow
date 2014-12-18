@@ -162,6 +162,8 @@ en:
     conclusion_title: What's going to happen?
     funds_shown_millions: (funds shown in millions of GEL)
     close_continue: Continue transferring funds
+    left_hand_tab: Left hand column
+    right_hand_tab: Right hand column
     priorities:
       Priority 1: Priority 1
       Priority 2: Priority 2

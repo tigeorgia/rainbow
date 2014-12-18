@@ -58,8 +58,8 @@
       </div>
       <div class="modal-body" id="trigger-popup-body">
         <ul class="nav nav-tabs">
-          <li class="active tab-label"><a href="#left-hand" role="tab" data-toggle="tab">Left-hand column</a></li>
-          <li class="tab-label"><a href="#right-hand" role="tab" data-toggle="tab">Right-hand column</a></li>
+          <li class="active tab-label"><a href="#left-hand" role="tab" data-toggle="tab"><%= t('budget.left_hand_tab') %></a></li>
+          <li class="tab-label"><a href="#right-hand" role="tab" data-toggle="tab"><%= t('budget.right_hand_tab') %></a></li>
         </ul>
 
         <!-- Popup Tab panes -->
@@ -72,7 +72,7 @@
 
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal"><%= t('close_continue') %></button>
+        <button type="button" class="btn btn-default" data-dismiss="modal"><%= t('budget.close_continue') %></button>
         <%= link_to(t('budget.reset_page'), budget_show_path(:locale => I18n.locale), class: 'btn btn-primary' )%>
       </div>
     </div>

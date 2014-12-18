@@ -39,6 +39,10 @@
 <script type="text/javascript">
     I18n.defaultLocale = "<%= I18n.default_locale %>";
     I18n.locale = "<%= I18n.locale %>";
+
+    $(function() {
+        $('body').scrollTop(0);
+    });
 </script>
 
 <% if Rails.env.production? %>
