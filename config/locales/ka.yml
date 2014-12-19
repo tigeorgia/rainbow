@@ -136,8 +136,8 @@ ka:
     too_much_allocated: ზედმეტი თანხა იქნა გადანაწილებული მოცემული პროგრამისთვის. განახლდა ბოლო 2-ჯერ შეცვლილი თანხის რაოდენობა
     cannot_take_money_right: მარჯვენა სვეტიდან თანხის გადაცემა ვერ მოხერხდება გადარიცხვამდე
     money_still_to_be_allocated: "{1} {0} მილიონი ჯერ კიდევ გასანაწილებელია. გადაიტანეთ მარჯვენა სვეტის პროგრამაში."
-    money_taken_from: მილიონი აღებული იქნა
-    money_added_to: მილიონი დაემატა
+    money_taken_from: "შემცირდება {0} მილიონით {1}დან: {2}"
+    money_added_to: "გაიზრდება {0} მილიონით {1}სთვის: {2}"
   budget:
     Agriculture: სოფლის მეურნეობის
     Culture: კულტურის და ძეგლთა დაცვის
@@ -162,8 +162,10 @@ ka:
     funds_shown_millions: (თანხა ნაჩვენებია მილიონ ლარებში)
     close_continue: გაგრძელდეს თანხის გადარიცხვა
     reset_page: გვერდის გადატვირთვა
-    left_hand_tab: შემცირდება sum-ით
-    right_hand_tab: გაიზრდება sum-ით
+    left_hand_tab: მარცხენა სვეტი
+    right_hand_tab: მარჯვენა სვეტი
+    controller_money_taken_from: "შემცირდება %{amount} მილიონით %{program}დან: %{description}"
+    controller_money_added_to: "გაიზრდება %{amount} მილიონით %{program}სთვის: %{description}"
     priorities:
       Priority 1: პარლამენტი
       Priority 2: საქართველოს მთავრობის ადმინისტრაცია და საჯარო სამსახური

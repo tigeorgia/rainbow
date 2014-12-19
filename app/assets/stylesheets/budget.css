@@ -76,3 +76,10 @@
     font-size: 14px !important;
 }
 
+.footnote_main_item {
+    padding-bottom: 14px;
+}
+
+.footnote_secondary_item {
+    padding-bottom: 7px;
+}

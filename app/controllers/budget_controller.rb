@@ -101,7 +101,7 @@ class BudgetController < ApplicationController
               description_text = description.first.description
 
               origin_program = t("budget.programs.Program #{item_id}")
-              statement = "#{amount_taken} #{t('scripts_messages.money_taken_from')} '#{origin_program}': #{description_text}"
+              statement = t('budget.controller_money_taken_from', amount: amount_taken, program: origin_program, description: description_text)
               left_statements << statement
             end
           elsif change['amount_added'] != '0'
@@ -122,28 +122,14 @@ class BudgetController < ApplicationController
               description_text = description.first.description
 
               target_program = t("budget.programs.Program #{item_id}")
-              statement = "#{amount_added} #{t('scripts_messages.money_added_to')} '#{target_program}': #{description_text}"
+              statement = t('budget.controller_money_added_to', amount: amount_added, program: target_program, description: description_text)
               right_statements << statement
             end
           end
-          #statement = "#{amount_taken} million(s) have been taken from '#{origin_program}', and have been redistributed in the following sub-programs: \n"
-          #allocated = []
-          #change['target'].each do |target_id, amount_added|
-            #target_program = t("budget.programs.Program #{target_id}")
-            #allocated << "#{amount_added} M(s) allocated to '#{target_program}'"
-          #end
-          #statement += allocated.join(', ')
-          # statements << statement
+
         end
     end
 
-    #left_statements.each do |statement|
-      #statements << statement
-    #end
-
-    #right_statements.each do |statement|
-      #statements << statement
-    #end
     statements['left'] = left_statements
     statements['right'] = right_statements
 

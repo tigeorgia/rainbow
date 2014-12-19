@@ -1,5 +1,17 @@
 $(document).ready(function(){
 
+    if (!String.format) {
+        String.format = function(format) {
+            var args = Array.prototype.slice.call(arguments, 1);
+            return format.replace(/{(\d+)}/g, function(match, number) {
+                return typeof args[number] != 'undefined'
+                    ? args[number]
+                    : match
+                    ;
+            });
+        };
+    }
+
     var left_old_id = "";
     var left_current_id = "";
     var right_old_id = "";
@@ -102,7 +114,8 @@ $(document).ready(function(){
             program_title = $("#"+origin_id).siblings("span").html();
 
             $(".alert_amount_message").each(function() {
-                $(this).html(parseFloat(transfer_amount) + " " + translations['money_taken_from'] + " '"+program_title+"' ("+priority_origin+"). " + translations['distribute_it_to_right']);
+                var money_taken_from_message = String.format(translations['money_taken_from'], parseFloat(transfer_amount), program_title, "("+priority_origin+"). ");
+                $(this).html(money_taken_from_message + translations['distribute_it_to_right']);
             });
 
             $(".alert").each(function() {
@@ -272,6 +285,21 @@ $(document).ready(function(){
             });
         }
 
+    });
+
+    // Event to show/hide the footnotes
+    $('#footnotes-link').click(function(){
+        var link_label = $('#footnotes-link').html();
+        if (link_label.indexOf('See footnotes') > -1){
+            link_label = 'Hide footnotes'
+        }else{
+            link_label = 'See footnotes'
+        }
+        $('#footnotes-link').html(link_label);
+        $("#footnotes-section").toggle(1000);
+        $('html,body').animate({scrollTop: $('#footnotes-link').offset().top }, 800);
+
+        return false;
     });
 
     // Events to fire (POST ajax call...) when clicking on 'Show conclusions'
