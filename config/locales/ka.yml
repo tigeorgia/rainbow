@@ -138,6 +138,10 @@ ka:
     money_still_to_be_allocated: "{1} {0} მილიონი ჯერ კიდევ გასანაწილებელია. გადაიტანეთ მარჯვენა სვეტის პროგრამაში."
     money_taken_from: "შემცირდება {0} მილიონით {1}დან: {2}"
     money_added_to: "გაიზრდება {0} მილიონით {1}სთვის: {2}"
+    show_footnotes: გახსენი განმარტებები
+    hide_footnotes: ჩაკეცე განმარტებები
+    show_introduction: გახსენი შესავალი
+    hide_introduction: ჩაკეცე შესავალი
   budget:
     Agriculture: სოფლის მეურნეობის
     Culture: კულტურის და ძეგლთა დაცვის

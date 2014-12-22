@@ -129,15 +129,19 @@ en:
         p2: "If you didn't request this, please ignore this email."
         p3: "Your password won't change until you access the link above and create a new one."
   scripts_messages:
-      funds_distributed_correctly: The funds have been distributed correctly.
-      distribute_it_to_right: Distribute it to a right-hand side program
-      funds_cannot_be_redistributed: Funds cannot be redistributed within the left column.
-      program_reset: program has been reset.
-      too_much_allocated: Too much was allocated on this main program. The 2 lastly modified amounts were reset.
-      cannot_take_money_right: You can't take money out of a right-hand side column, while transferring.
-      money_still_to_be_allocated: "{0} million(s) from {1} are still to be allocated. Distribute it to a right-hand side program."
-      money_taken_from: "{0} million(s) have been taken from {1}"
-      money_added_to: "{0} million(s) have been added to {1}"
+    funds_distributed_correctly: The funds have been distributed correctly.
+    distribute_it_to_right: Distribute it to a right-hand side program
+    funds_cannot_be_redistributed: Funds cannot be redistributed within the left column.
+    program_reset: program has been reset.
+    too_much_allocated: Too much was allocated on this main program. The 2 lastly modified amounts were reset.
+    cannot_take_money_right: You can't take money out of a right-hand side column, while transferring.
+    money_still_to_be_allocated: "{0} million(s) from {1} are still to be allocated. Distribute it to a right-hand side program."
+    money_taken_from: "{0} million(s) have been taken from {1}"
+    money_added_to: "{0} million(s) have been added to {1}"
+    show_footnotes: Show footnotes
+    hide_footnotes: Hide footnotes
+    show_introduction: Show introduction
+    hide_introduction: Hide introduction
   budget:
     Agriculture: Agriculture
     Culture: Culture

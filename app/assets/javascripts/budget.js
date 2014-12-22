@@ -287,17 +287,32 @@ $(document).ready(function(){
 
     });
 
+    // Event to show/hide the introduction
+    $('#introduction-link').click(function(){
+        var link_label = $('#introduction-link').html();
+        if (link_label.indexOf(translations['show_introduction']) > -1){
+            link_label = translations['hide_introduction']
+        }else{
+            link_label = translations['show_introduction']
+        }
+        $('#introduction-link').html(link_label);
+        $("#introduction-section").toggle(1000);
+        //$('html,body').animate({scrollTop: $('#introduction-link').offset().top }, 800);
+
+        return false;
+    });
+
     // Event to show/hide the footnotes
     $('#footnotes-link').click(function(){
         var link_label = $('#footnotes-link').html();
-        if (link_label.indexOf('See footnotes') > -1){
-            link_label = 'Hide footnotes'
+        if (link_label.indexOf(translations['show_footnotes']) > -1){
+            link_label = translations['hide_footnotes']
         }else{
-            link_label = 'See footnotes'
+            link_label = translations['show_footnotes']
         }
         $('#footnotes-link').html(link_label);
         $("#footnotes-section").toggle(1000);
-        $('html,body').animate({scrollTop: $('#footnotes-link').offset().top }, 800);
+        //$('html,body').animate({scrollTop: $('#footnotes-link').offset().top }, 800);
 
         return false;
     });
